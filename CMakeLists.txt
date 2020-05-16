@@ -53,7 +53,11 @@ add_clang_executable(nett
     checks/warning/GoToCheck.cpp
     )
 
-set(CMAKE_EXE_LINKER_FLAGS " -static")
+set(GCC_COMPILE_FLAGS "-g")
+set(GCC_LINK_FLAGS "-static")
+
+#[[ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COMPILE_FLAGS}") ]]
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${GCC_LINK_FLAGS}")
 
 target_link_libraries(nett
     PRIVATE

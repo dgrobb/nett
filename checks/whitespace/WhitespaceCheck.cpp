@@ -736,7 +736,8 @@ void CheckSourceRangeWhitespaceTokensNoPointers(clang::SourceLocation StartLoc,
 
         CurrentToken = NextToken;
     } while (clang::Lexer::getLocForEndOfToken(
-                     NextToken->getLocation(), 1, SM, LangOpts) <= EndLoc);
+                     NextToken->getLocation(), 1, SM, LangOpts) <= EndLoc &&
+                     CurrentToken->getLocation() != NextToken->getLocation());
 }
 
 }  // namespace whitespace

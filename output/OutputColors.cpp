@@ -9,8 +9,10 @@ namespace nett {
 namespace colors {
 
 static const char* Colors[] = {
-        "\033[0m",    // Reset
-        "\033[37;1m"  // Bold White
+        "\033[0m",        // Reset
+        "\033[37;1m",     // Bold White
+        "\033[32m",       // Green
+        "\033[38;5;136m"  // Orange
 };
 
 std::string Colorize(std::string String, enum TerminalColor Color) {

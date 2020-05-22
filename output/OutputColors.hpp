@@ -9,7 +9,7 @@
 namespace nett {
 namespace colors {
 
-enum TerminalColor { COLOR_RESET, COLOR_BOLD_WHITE };
+enum TerminalColor { COLOR_RESET, COLOR_BOLD_WHITE, COLOR_GREEN, COLOR_ORANGE};
 
 // Returns the given string, wrapped within the terminal
 // escape sequence corresponding to the given terminal color.

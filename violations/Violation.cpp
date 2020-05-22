@@ -212,7 +212,7 @@ std::string LineLengthViolation::ToTerminalString(void) {
 std::string LineLengthViolation::ToFileString(void) {
 
     std::ostringstream Message;
-    Message << "[LINE_LENGTH] " << Violation::Message;
+    Message << "[LINE-LENGTH] " << Violation::Message;
 
     return Message.str();
 }

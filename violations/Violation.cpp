@@ -203,7 +203,7 @@ LineLengthViolation::LineLengthViolation(
 std::string LineLengthViolation::ToTerminalString(void) {
 
     std::ostringstream Message;
-    Message << "Line " << Violation::LineNo << ": [LINE_LENGTH] "
+    Message << "Line " << Violation::LineNo << ": [LINE-LENGTH] "
             << Violation::Message;
 
     return Message.str();

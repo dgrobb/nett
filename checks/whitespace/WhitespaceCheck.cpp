@@ -98,12 +98,7 @@ void CheckParenWhitespace(clang::SourceLocation LParenLoc,
         CurrentLoc = CurrentLoc.getLocWithOffset(1);
     }
 
-    if (SM.getSpellingLineNumber(CurrentLoc) != LParenLineNo) {
-        // std::stringstream ErrMsg;
-        // ErrMsg << "Opening parentheses should look like: (X...";
-        // GlobalViolationManager.AddViolation(
-        //         new WhitespaceViolation(File, LParenLineNo, ErrMsg.str()));
-    } else {
+    if (SM.getSpellingLineNumber(CurrentLoc) == LParenLineNo) {
         CheckLocationWhitespace(LParenLoc, CurrentLoc, 0, SM, LangOpts);
     }
 
@@ -208,6 +203,40 @@ void CheckPointerAlignment(clang::SourceLocation PtrLoc,
     }
 }
 
+// Checks if the given token is allowed to be to the
+// right of a valid pointer.
+bool ValidPointerRHS(llvm::Optional<clang::Token> Token, 
+        clang::SourceManager& SM, clang::LangOptions LangOpts) {
+    
+    clang::Token Result;
+    auto Loc = clang::Lexer::GetBeginningOfToken(Token->getLocation(), SM, LangOpts);
+
+    bool result = clang::Lexer::getRawToken(SM.getFileLoc(Loc), Result, SM, LangOpts);
+
+    if (result || Result.getKind() == clang::tok::numeric_constant) {
+        return false;
+    }
+
+    return true;
+}
+
+// Checks if the given token is allowed to be to the
+// left of a valid pointer.
+bool ValidPointerLHS(llvm::Optional<clang::Token> Token, 
+        clang::SourceManager& SM, clang::LangOptions LangOpts) {
+    
+    clang::Token Result;
+    auto Loc = clang::Lexer::GetBeginningOfToken(Token->getLocation(), SM, LangOpts);
+   
+    bool result = clang::Lexer::getRawToken(Loc, Result, SM, LangOpts);
+
+    if (result || Result.getKind() == clang::tok::numeric_constant) {
+        return false;
+    }
+
+    return true;
+}
+
 void CheckPointerSpacing(llvm::Optional<clang::Token> CurrentToken,
         llvm::Optional<clang::Token> NextToken, clang::SourceManager& SM,
         clang::LangOptions LangOpts) {
@@ -233,6 +262,12 @@ void CheckPointerSpacing(llvm::Optional<clang::Token> CurrentToken,
     }
     if (CurrentTokenData == '*' && NextTokenData != '*') {
         // We have a pointer followed by another token. (e.g. *x)
+
+        // Check whether the next token is valid for a pointer
+        if (!ValidPointerRHS(NextToken, SM, LangOpts)) {
+            return;
+        }
+
         auto PtrLoc = CurrentToken->getLocation();
         auto TokenLoc = NextToken->getLocation();
 
@@ -338,6 +373,12 @@ void CheckPointerSpacing(llvm::Optional<clang::Token> CurrentToken,
     }
     if (CurrentTokenData != '*' && NextTokenData == '*') {
         // We have a token followed by a pointer. (e.g. int*)
+
+        // Check whether the current token is valid for a pointer
+        if (!ValidPointerLHS(CurrentToken, SM, LangOpts)) {
+            return;
+        }
+
         // They should be on the same line
         auto TokenLoc = CurrentToken->getLocation().getLocWithOffset(
                 CurrentToken->getLength() - 1);

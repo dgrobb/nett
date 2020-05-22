@@ -5,6 +5,7 @@
 
 #include "../../violations/ViolationManager.hpp"
 #include "../utils/Tokens.hpp"
+#include "../whitespace/WhitespaceCheck.hpp"
 #include "GlobalVarIndentCheck.hpp"
 #include "IndentWidths.hpp"
 
@@ -68,10 +69,9 @@ void CheckSourceRangeContinuationIndent(clang::SourceLocation StartLoc,
 
     while (Offset != llvm::StringRef::npos) {
         auto NextLineLocation = StartLoc.getLocWithOffset(Offset + 1);
-        auto NextLineToken =
-                clang::Lexer::findNextToken(NextLineLocation, SM, LangOpts);
-
-        if (SM.getExpansionLineNumber(NextLineToken->getLocation()) !=
+        auto NextTokenLoc = checks::whitespace::GetNextNonWhitespaceLoc(NextLineLocation, SM);
+        
+        if (SM.getExpansionLineNumber(NextTokenLoc) !=
                 SM.getExpansionLineNumber(NextLineLocation)) {
             // The current line is empty
             std::stringstream ErrMsg;
@@ -82,8 +82,8 @@ void CheckSourceRangeContinuationIndent(clang::SourceLocation StartLoc,
             GlobalViolationManager.AddViolation(
                     new WhitespaceViolation(File, LineNo, ErrMsg.str()));
         } else {
-            if (NextLineToken->getLocation() <= EndLoc) {
-                CheckStatementIndentation(NextLineToken->getLocation(), Context,
+            if (NextTokenLoc <= EndLoc) {
+                CheckStatementIndentation(NextTokenLoc, Context,
                         NestingLevel + SwitchNestingLevel + 2);
             }
         }

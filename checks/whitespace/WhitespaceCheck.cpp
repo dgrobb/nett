@@ -203,43 +203,44 @@ void CheckPointerAlignment(clang::SourceLocation PtrLoc,
     }
 }
 
-// Checks if the given token is allowed to be to the
-// right of a valid pointer.
-bool ValidPointerRHS(llvm::Optional<clang::Token> Token, 
-        clang::SourceManager& SM, clang::LangOptions LangOpts) {
+// Checks if the given pointer token is within brackets '[]'
+// If so, it is not a pointer, but a multiplication sign. So we return true.
+// Otherwise, if no brackets are found within the given min and
+// max source locations, returns false.
+bool PointerInBrackets(llvm::Optional<clang::Token> Token, 
+        clang::SourceManager& SM, clang::LangOptions LangOpts,
+        clang::SourceLocation RangeMinLoc, clang::SourceLocation RangeMaxLoc) {
     
-    clang::Token Result;
-    auto Loc = clang::Lexer::GetBeginningOfToken(Token->getLocation(), SM, LangOpts);
+    auto PointerLoc = SM.getFileLoc(Token->getLocation());
+    auto LHS = PointerLoc.getLocWithOffset(-1);
+    auto RHS = PointerLoc.getLocWithOffset(1);
 
-    bool result = clang::Lexer::getRawToken(SM.getFileLoc(Loc), Result, SM, LangOpts);
+    bool FoundOpeningBracket = false;
+    bool FoundClosingBracket = false;
 
-    if (result || Result.getKind() == clang::tok::numeric_constant) {
-        return false;
+    while (LHS >= RangeMinLoc) {
+        if (*SM.getCharacterData(LHS) == '[') {
+            FoundOpeningBracket = true;
+            break;
+        }
+        LHS = LHS.getLocWithOffset(-1);
     }
-
-    return true;
-}
-
-// Checks if the given token is allowed to be to the
-// left of a valid pointer.
-bool ValidPointerLHS(llvm::Optional<clang::Token> Token, 
-        clang::SourceManager& SM, clang::LangOptions LangOpts) {
     
-    clang::Token Result;
-    auto Loc = clang::Lexer::GetBeginningOfToken(Token->getLocation(), SM, LangOpts);
+    while (RHS <= RangeMaxLoc) {
+        if (*SM.getCharacterData(RHS) == ']') {
+            FoundClosingBracket = true;
+            break;
+        } 
+        RHS = RHS.getLocWithOffset(1);
+    }
    
-    bool result = clang::Lexer::getRawToken(Loc, Result, SM, LangOpts);
-
-    if (result || Result.getKind() == clang::tok::numeric_constant) {
-        return false;
-    }
-
-    return true;
+    return FoundOpeningBracket && FoundClosingBracket;
 }
 
 void CheckPointerSpacing(llvm::Optional<clang::Token> CurrentToken,
         llvm::Optional<clang::Token> NextToken, clang::SourceManager& SM,
-        clang::LangOptions LangOpts) {
+        clang::LangOptions LangOpts, clang::SourceLocation RangeMinLoc,
+        clang::SourceLocation RangeMaxLoc) {
 
     auto CurrentTokenData = *SM.getCharacterData(CurrentToken->getLocation());
     auto NextTokenData = *SM.getCharacterData(NextToken->getLocation());
@@ -264,7 +265,8 @@ void CheckPointerSpacing(llvm::Optional<clang::Token> CurrentToken,
         // We have a pointer followed by another token. (e.g. *x)
 
         // Check whether the next token is valid for a pointer
-        if (!ValidPointerRHS(NextToken, SM, LangOpts)) {
+        if (PointerInBrackets(CurrentToken, SM, LangOpts, 
+                RangeMinLoc, RangeMaxLoc)) {
             return;
         }
 
@@ -375,7 +377,8 @@ void CheckPointerSpacing(llvm::Optional<clang::Token> CurrentToken,
         // We have a token followed by a pointer. (e.g. int*)
 
         // Check whether the current token is valid for a pointer
-        if (!ValidPointerLHS(CurrentToken, SM, LangOpts)) {
+        if (PointerInBrackets(NextToken, SM, LangOpts, 
+                RangeMinLoc, RangeMaxLoc)) {
             return;
         }
 
@@ -744,7 +747,7 @@ void CheckSourceRangeWhitespaceTokens(clang::SourceLocation StartLoc,
             break;
         }
 
-        CheckPointerSpacing(CurrentToken, NextToken, SM, LangOpts);
+        CheckPointerSpacing(CurrentToken, NextToken, SM, LangOpts, StartLoc, EndLoc);
         CheckSquareBracketSpacing(CurrentToken, NextToken, SM, LangOpts);
         CheckParenthesisSpacing(CurrentToken, NextToken, SM, LangOpts);
         CheckCommaSpacing(CurrentToken, NextToken, SM, LangOpts);

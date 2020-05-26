@@ -710,7 +710,8 @@ void CheckGeneralSpacing(llvm::Optional<clang::Token> CurrentToken,
             clang::tok::semi, clang::tok::star, clang::tok::amp,
             clang::tok::plus, clang::tok::minus, clang::tok::arrow,
             clang::tok::tilde, clang::tok::exclaim, clang::tok::comment,
-            clang::tok::minusminus, clang::tok::plusplus, clang::tok::caret};
+            clang::tok::minusminus, clang::tok::plusplus, clang::tok::caret,
+            clang::tok::colon};
 
     for (auto Token : TokensToIgnore) {
         if (Token == CurrentTokenData || Token == NextTokenData) {
@@ -743,8 +744,10 @@ void CheckSourceRangeWhitespaceTokens(clang::SourceLocation StartLoc,
     do {
         NextToken = clang::Lexer::findNextToken(
                 CurrentToken->getEndLoc().getLocWithOffset(-1), SM, LangOpts);
-        if (NextToken->getLocation() > EndLoc) {
-            break;
+
+        if (NextToken->getLocation() > EndLoc ||
+                CurrentToken->getLocation() == NextToken->getLocation()) {
+             break;
         }
 
         CheckPointerSpacing(CurrentToken, NextToken, SM, LangOpts, StartLoc, EndLoc);
@@ -768,7 +771,8 @@ void CheckSourceRangeWhitespaceTokensNoPointers(clang::SourceLocation StartLoc,
     do {
         NextToken = clang::Lexer::findNextToken(
                 CurrentToken->getEndLoc().getLocWithOffset(-1), SM, LangOpts);
-        if (NextToken->getLocation() > EndLoc) {
+        if (NextToken->getLocation() > EndLoc ||
+                CurrentToken->getLocation() == NextToken->getLocation()) {
             break;
         }
 
@@ -780,8 +784,7 @@ void CheckSourceRangeWhitespaceTokensNoPointers(clang::SourceLocation StartLoc,
 
         CurrentToken = NextToken;
     } while (clang::Lexer::getLocForEndOfToken(
-                     NextToken->getLocation(), 1, SM, LangOpts) <= EndLoc &&
-                     CurrentToken->getLocation() != NextToken->getLocation());
+                     NextToken->getLocation(), 1, SM, LangOpts) <= EndLoc);
 }
 
 }  // namespace whitespace

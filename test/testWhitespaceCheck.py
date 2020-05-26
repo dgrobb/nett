@@ -105,6 +105,21 @@ class TestWhitespaceChecks(unittest.TestCase):
 
         self.assertEqual(expected_output, extracted_output)
 
+    def test_ternary_operator_whitespace_check(self):
+        stdout = subprocess.check_output([NETT_PATH, TEST_PATH + "/test_files/whitespace/ternaryOperatorWhitespaceCheckTest.c"])
+        extracted_output = "\n".join(stdout.decode("utf-8").split('\n')[1:])
+
+        expected_output = "\n".join([
+            "Line 2: [WHITESPACE] ';' at position 28, expected 0 spaces, found 1",
+            "Line 3: [WHITESPACE] '?' at position 23, expected 1 space, found 2",
+            "Line 3: [WHITESPACE] '3' at position 26, expected 1 space, found 2",
+            "Line 3: [WHITESPACE] ':' at position 29, expected 1 space, found 2",
+            "Line 3: [WHITESPACE] '++' at position 34, expected 1 space, found 4",
+            "Line 5: [WHITESPACE] '3' at position 16, expected 1 space, found 2",
+            "Line 7: [WHITESPACE] ':' at position 21, expected 1 space, found 2",
+            ""
+        ])
+
     def test_struct_union_member_access_whitespace_check(self):
         stdout = subprocess.check_output([NETT_PATH, TEST_PATH + "/test_files/whitespace/structUnionMemberAccessWhitespaceCheckTest.c"])
         extracted_output = "\n".join(stdout.decode("utf-8").split('\n')[1:])

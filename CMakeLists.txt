@@ -39,6 +39,7 @@ add_clang_executable(nett
     checks/whitespace/StructUnionWhitespaceCheck.cpp
     checks/whitespace/FunctionCallWhitespaceCheck.cpp
     checks/whitespace/VarDeclWhitespaceCheck.cpp
+    checks/whitespace/TernaryOperatorWhitespaceCheck.cpp
     checks/indentation/IndentCheck.cpp
     checks/indentation/GlobalVarIndentCheck.cpp
     checks/indentation/FuncDeclParamContIndentCheck.cpp
@@ -53,10 +54,10 @@ add_clang_executable(nett
     checks/warning/GoToCheck.cpp
     )
 
-set(GCC_COMPILE_FLAGS "-g")
+set(GCC_COMPILE_FLAGS "-O3")
 set(GCC_LINK_FLAGS "-static")
 
-#[[ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COMPILE_FLAGS}") ]]
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COMPILE_FLAGS}")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${GCC_LINK_FLAGS}")
 
 target_link_libraries(nett

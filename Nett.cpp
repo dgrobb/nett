@@ -47,6 +47,7 @@
 #include "checks/whitespace/StructUnionWhitespaceCheck.hpp"
 #include "checks/whitespace/UnaryOperatorWhitespaceCheck.hpp"
 #include "checks/whitespace/VarDeclWhitespaceCheck.hpp"
+#include "checks/whitespace/TernaryOperatorWhitespaceCheck.hpp"
 #include "input/FileInput.hpp"
 #include "output/OutputColors.hpp"
 #include "output/UserOutput.hpp"
@@ -153,6 +154,9 @@ auto StmtMatcher = stmt().bind("stmt");
 // Function call matcher
 auto FuncCallMatcher = callExpr().bind("funcCall");
 
+// Ternary expression matcher
+auto TernaryMatcher = conditionalOperator().bind("ternaryExpr");
+
 }  // namespace
 
 // TRAVERSAL SETUP ------------------------------------------------------------
@@ -219,6 +223,8 @@ class NettASTConsumer : public ASTConsumer {
                 new checks::whitespace::FunctionCallWhitespaceChecker(PP));
         Matcher.addMatcher(VarDeclMatcher,
                 new checks::whitespace::VarDeclWhitespaceChecker(PP));
+        Matcher.addMatcher(TernaryMatcher,
+                new checks::whitespace::TernaryOperatorWhitespaceChecker());
 
         // INDENTATION checks
         Matcher.addMatcher(FuncDeclMatcher,

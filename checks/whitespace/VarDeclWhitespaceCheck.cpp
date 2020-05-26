@@ -59,9 +59,18 @@ void VarDeclWhitespaceChecker::run(const MatchFinder::MatchResult& Result) {
         if (Node->hasInit()) {
             // We need to shift the end location to before the
             // assignment to allow for proper pointer checks.
-            while (*SM.getCharacterData(EndLoc) != '=') {
-                EndLoc = EndLoc.getLocWithOffset(-1);
+            // Note that we need to find the '=' furthest to
+            // the left to account for ternary operators.
+            auto CurrentLoc = EndLoc;
+            while (CurrentLoc >= StartLoc) {
+                if (*SM.getCharacterData(CurrentLoc) == '=') {
+                    EndLoc = CurrentLoc;
+                }
+                CurrentLoc = CurrentLoc.getLocWithOffset(-1);
             }
+            // while (*SM.getCharacterData(EndLoc) != '=') {
+            //     EndLoc = EndLoc.getLocWithOffset(-1);
+            // }
             auto AssignOpLoc = EndLoc;
             EndLoc = GetPreviousNonWhitespaceLoc(
                     AssignOpLoc.getLocWithOffset(-1), SM);

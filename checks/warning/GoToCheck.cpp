@@ -30,7 +30,7 @@ void GoToChecker::run(const MatchFinder::MatchResult& Result) {
         std::stringstream ErrMsg;
         ErrMsg << "'goto' is banned and should not be used.";
         GlobalViolationManager.AddViolation(
-                new WarningViolation(File, LineNo, ErrMsg.str()));
+                new WarningViolation(File.str(), LineNo, ErrMsg.str()));
     }
 }
 

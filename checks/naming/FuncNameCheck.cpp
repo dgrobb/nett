@@ -47,7 +47,7 @@ void FuncNameChecker::run(const MatchFinder::MatchResult& Result) {
 
             GlobalViolationManager.AddInfractedName(Name.str());
             GlobalViolationManager.AddViolation(
-                    new NamingViolation(File, LineNo, ErrMsg.str()));
+                    new NamingViolation(File.str(), LineNo, ErrMsg.str()));
         }
     }
 }

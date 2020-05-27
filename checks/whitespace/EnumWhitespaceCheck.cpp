@@ -48,7 +48,7 @@ void EnumWhitespaceChecker::run(const MatchFinder::MatchResult& Result) {
                 std::stringstream ErrMsg;
                 ErrMsg << "Typedef'd enums should look like: typedef enum ...";
                 GlobalViolationManager.AddViolation(new WhitespaceViolation(
-                        File, SM.getExpansionLineNumber(TypedefBeginLoc),
+                        File.str(), SM.getExpansionLineNumber(TypedefBeginLoc),
                         ErrMsg.str()));
             } else {
                 auto TypedefEndLoc = TypedefBeginLoc.getLocWithOffset(6);
@@ -73,7 +73,7 @@ void EnumWhitespaceChecker::run(const MatchFinder::MatchResult& Result) {
                 std::stringstream ErrMsg;
                 ErrMsg << "Enums should look like: enum X";
                 GlobalViolationManager.AddViolation(new WhitespaceViolation(
-                        File, SM.getExpansionLineNumber(EnumEndLoc),
+                        File.str(), SM.getExpansionLineNumber(EnumEndLoc),
                         ErrMsg.str()));
             } else {
                 CheckLocationWhitespace(
@@ -128,7 +128,7 @@ void EnumWhitespaceChecker::run(const MatchFinder::MatchResult& Result) {
             ErrMsg << "Semicolons should be on the same line as the end of a "
                       "declaration.";
             GlobalViolationManager.AddViolation(new WhitespaceViolation(
-                    File, SM.getExpansionLineNumber(SemiLoc), ErrMsg.str()));
+                    File.str(), SM.getExpansionLineNumber(SemiLoc), ErrMsg.str()));
         } else {
             CheckLocationWhitespace(EndLoc, SemiLoc, 0, SM, LangOpts);
         }

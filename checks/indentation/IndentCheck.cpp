@@ -43,7 +43,7 @@ void CheckStatementIndentation(clang::SourceLocation Loc,
                << ActualIndent << ".";
 
         GlobalViolationManager.AddViolation(
-                new IndentationViolation(File, LocLineNo, ErrMsg.str()));
+                new IndentationViolation(File.str(), LocLineNo, ErrMsg.str()));
     }
 }
 
@@ -80,7 +80,7 @@ void CheckSourceRangeContinuationIndent(clang::SourceLocation StartLoc,
             ErrMsg << "Line continuations should not contain blank lines.";
 
             GlobalViolationManager.AddViolation(
-                    new WhitespaceViolation(File, LineNo, ErrMsg.str()));
+                    new WhitespaceViolation(File.str(), LineNo, ErrMsg.str()));
         } else {
             if (NextTokenLoc <= EndLoc) {
                 CheckStatementIndentation(NextTokenLoc, Context,

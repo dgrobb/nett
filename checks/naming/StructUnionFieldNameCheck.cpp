@@ -42,11 +42,11 @@ void RecordFieldNameChecker::run(const MatchFinder::MatchResult& Result) {
 
                 GlobalViolationManager.AddInfractedName(Name.str());
                 GlobalViolationManager.AddViolation(
-                        new NamingViolation(File, LineNo, ErrMsg.str()));
+                        new NamingViolation(File.str(), LineNo, ErrMsg.str()));
             } else if (GlobalViolationManager.WillOutputToFile()) {
                 ErrMsg << "'" << Name.str() << "' has already been infracted.";
                 GlobalViolationManager.AddViolation(
-                        new NoteViolation(File, LineNo, ErrMsg.str()));
+                        new NoteViolation(File.str(), LineNo, ErrMsg.str()));
             }
         }
 
@@ -60,11 +60,11 @@ void RecordFieldNameChecker::run(const MatchFinder::MatchResult& Result) {
 
                 GlobalViolationManager.AddInfractedName(Name.str());
                 GlobalViolationManager.AddViolation(
-                        new NamingViolation(File, LineNo, ErrMsg.str()));
+                        new NamingViolation(File.str(), LineNo, ErrMsg.str()));
             } else if (GlobalViolationManager.WillOutputToFile()) {
                 ErrMsg << "'" << Name.str() << "' has already been infracted.";
                 GlobalViolationManager.AddViolation(
-                        new NoteViolation(File, LineNo, ErrMsg.str()));
+                        new NoteViolation(File.str(), LineNo, ErrMsg.str()));
             }
         }
     }

@@ -33,7 +33,7 @@ void FuncDefinitionInHeaderChecker::run(
             ErrMsg << "Headers should not contain function definitions.";
 
             GlobalViolationManager.AddViolation(
-                    new OverallViolation(File, LineNo, ErrMsg.str()));
+                    new OverallViolation(File.str(), LineNo, ErrMsg.str()));
         }
     }
 }

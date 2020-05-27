@@ -56,7 +56,7 @@ void GlobalVariableSemicolonWhitespaceChecker::run(
             ErrMsg << "Semicolons should be on the same line as the end of a "
                       "declaration.";
             GlobalViolationManager.AddViolation(
-                    new WhitespaceViolation(File, ColonLineNo, ErrMsg.str()));
+                    new WhitespaceViolation(File.str(), ColonLineNo, ErrMsg.str()));
         } else {
             CheckLocationWhitespace(PrevLoc, ColonLoc, 0, SM, LangOpts);
         }

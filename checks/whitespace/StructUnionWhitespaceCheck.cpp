@@ -54,7 +54,7 @@ void StructUnionWhitespaceChecker::run(const MatchFinder::MatchResult& Result) {
                               "struct ...";
                 }
                 GlobalViolationManager.AddViolation(new WhitespaceViolation(
-                        File, SM.getExpansionLineNumber(RecordBeginLoc),
+                        File.str(), SM.getExpansionLineNumber(RecordBeginLoc),
                         ErrMsg.str()));
             } else {
                 auto TypedefEndLoc = TypedefBeginLoc.getLocWithOffset(6);
@@ -88,7 +88,7 @@ void StructUnionWhitespaceChecker::run(const MatchFinder::MatchResult& Result) {
                     ErrMsg << "Structs should look like: struct X";
                 }
                 GlobalViolationManager.AddViolation(new WhitespaceViolation(
-                        File, SM.getExpansionLineNumber(RecordEndLoc),
+                        File.str(), SM.getExpansionLineNumber(RecordEndLoc),
                         ErrMsg.str()));
             } else {
                 CheckLocationWhitespace(
@@ -143,7 +143,7 @@ void StructUnionWhitespaceChecker::run(const MatchFinder::MatchResult& Result) {
                     ErrMsg << "Semicolons should be on the same line as the "
                               "end of a declaration.";
                     GlobalViolationManager.AddViolation(new WhitespaceViolation(
-                            File, SM.getExpansionLineNumber(SemiLoc),
+                            File.str(), SM.getExpansionLineNumber(SemiLoc),
                             ErrMsg.str()));
                 } else {
                     CheckLocationWhitespace(
@@ -168,7 +168,7 @@ void StructUnionWhitespaceChecker::run(const MatchFinder::MatchResult& Result) {
             ErrMsg << "Semicolons should be on the same line as the end of a "
                       "declaration.";
             GlobalViolationManager.AddViolation(new WhitespaceViolation(
-                    File, SM.getExpansionLineNumber(SemiLoc), ErrMsg.str()));
+                    File.str(), SM.getExpansionLineNumber(SemiLoc), ErrMsg.str()));
         } else {
             CheckLocationWhitespace(EndLoc, SemiLoc, 0, SM, LangOpts);
         }

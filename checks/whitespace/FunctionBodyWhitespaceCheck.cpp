@@ -46,7 +46,7 @@ class FunctionASTVisitor
             std::stringstream ErrMsg;
             ErrMsg << "If statements should look like: if (cond...";
             GlobalViolationManager.AddViolation(
-                    new WhitespaceViolation(File, IfLineNo, ErrMsg.str()));
+                    new WhitespaceViolation(File.str(), IfLineNo, ErrMsg.str()));
         } else {
             CheckLocationWhitespace(
                     IfLoc.getLocWithOffset(1), CondParenLoc, 1, SM, LangOpts);
@@ -89,7 +89,7 @@ class FunctionASTVisitor
                 ErrMsg << "else-if statements should look like: } else if "
                           "(cond...";
                 GlobalViolationManager.AddViolation(new WhitespaceViolation(
-                        File, ElseLineNo, ErrMsg.str()));
+                        File.str(), ElseLineNo, ErrMsg.str()));
             } else {
                 CheckLocationWhitespace(Stmt->getElseLoc().getLocWithOffset(3),
                         Stmt->getElse()->getBeginLoc(), 1, SM, LangOpts);
@@ -130,7 +130,7 @@ class FunctionASTVisitor
             std::stringstream ErrMsg;
             ErrMsg << "For loops should look like: for (...";
             GlobalViolationManager.AddViolation(new WhitespaceViolation(
-                    File, SM.getExpansionLineNumber(ForLoc), ErrMsg.str()));
+                    File.str(), SM.getExpansionLineNumber(ForLoc), ErrMsg.str()));
         } else {
             CheckLocationWhitespace(ForLoc, LParenLoc, 1, SM, LangOpts);
         }
@@ -175,7 +175,7 @@ class FunctionASTVisitor
                 ErrMsg << "For loop initialisers should look like: for (init; "
                           "...";
                 GlobalViolationManager.AddViolation(new WhitespaceViolation(
-                        File, InitEndLineNo, ErrMsg.str()));
+                        File.str(), InitEndLineNo, ErrMsg.str()));
             } else {
                 CheckLocationWhitespace(
                         InitEndLoc, InitSemiLoc, 0, SM, LangOpts);
@@ -201,7 +201,7 @@ class FunctionASTVisitor
                 ErrMsg << "For loop conditions should look like: for (...; "
                           "cond; ...";
                 GlobalViolationManager.AddViolation(new WhitespaceViolation(
-                        File, CondEndLineNo, ErrMsg.str()));
+                        File.str(), CondEndLineNo, ErrMsg.str()));
             } else {
                 CheckLocationWhitespace(
                         CondEndLoc, IncSemiLoc, 0, SM, LangOpts);
@@ -217,7 +217,7 @@ class FunctionASTVisitor
                 ErrMsg << "Missing for loop conditions should look like: for "
                           "(...;; ...";
                 GlobalViolationManager.AddViolation(new WhitespaceViolation(
-                        File, InitSemiLineNo, ErrMsg.str()));
+                        File.str(), InitSemiLineNo, ErrMsg.str()));
             } else {
                 CheckLocationWhitespace(
                         InitSemiLoc, IncSemiLoc, 0, SM, LangOpts);
@@ -269,7 +269,7 @@ class FunctionASTVisitor
             std::stringstream ErrMsg;
             ErrMsg << "Do-While loop conditions should look like: while (...";
             GlobalViolationManager.AddViolation(
-                    new WhitespaceViolation(File, CondLineNo, ErrMsg.str()));
+                    new WhitespaceViolation(File.str(), CondLineNo, ErrMsg.str()));
         } else {
             CheckLocationWhitespace(WhileEndLoc, CondStartLoc, 1, SM, LangOpts);
         }
@@ -290,7 +290,7 @@ class FunctionASTVisitor
             std::stringstream ErrMsg;
             ErrMsg << "Do-While loop conditions should look like: ...);";
             GlobalViolationManager.AddViolation(
-                    new WhitespaceViolation(File, CondLineNo, ErrMsg.str()));
+                    new WhitespaceViolation(File.str(), CondLineNo, ErrMsg.str()));
         } else {
             CheckLocationWhitespace(CondEndLoc, SemiLoc, 0, SM, LangOpts);
         }
@@ -313,7 +313,7 @@ class FunctionASTVisitor
             std::stringstream ErrMsg;
             ErrMsg << "While loops should look like: while (...";
             GlobalViolationManager.AddViolation(new WhitespaceViolation(
-                    File, SM.getExpansionLineNumber(WhileLoc), ErrMsg.str()));
+                    File.str(), SM.getExpansionLineNumber(WhileLoc), ErrMsg.str()));
         } else {
             CheckLocationWhitespace(WhileLoc, CondStartLoc, 1, SM, LangOpts);
         }
@@ -355,7 +355,7 @@ class FunctionASTVisitor
             std::stringstream ErrMsg;
             ErrMsg << "Switch statements should look like: switch (...";
             GlobalViolationManager.AddViolation(new WhitespaceViolation(
-                    File, SM.getExpansionLineNumber(SwitchLoc), ErrMsg.str()));
+                    File.str(), SM.getExpansionLineNumber(SwitchLoc), ErrMsg.str()));
         } else {
             CheckLocationWhitespace(SwitchLoc, CondStartLoc, 1, SM, LangOpts);
         }
@@ -398,7 +398,7 @@ class FunctionASTVisitor
             std::stringstream ErrMsg;
             ErrMsg << "Case statements should look like: case X:";
             GlobalViolationManager.AddViolation(new WhitespaceViolation(
-                    File, SM.getExpansionLineNumber(CaseLoc), ErrMsg.str()));
+                    File.str(), SM.getExpansionLineNumber(CaseLoc), ErrMsg.str()));
         } else {
             CheckLocationWhitespace(CaseLoc, CondStartLoc, 1, SM, LangOpts);
         }
@@ -414,7 +414,7 @@ class FunctionASTVisitor
             std::stringstream ErrMsg;
             ErrMsg << "Case expressions should look like: case X:";
             GlobalViolationManager.AddViolation(new WhitespaceViolation(
-                    File, SM.getExpansionLineNumber(CondEndLoc), ErrMsg.str()));
+                    File.str(), SM.getExpansionLineNumber(CondEndLoc), ErrMsg.str()));
         } else {
             CheckLocationWhitespace(CondEndLoc, ColonLoc, 0, SM, LangOpts);
         }
@@ -468,7 +468,7 @@ void FunctionBodyWhitespaceChecker::run(
                 ErrMsg << "Semicolons should be on the same line as the end of "
                           "a declaration.";
                 GlobalViolationManager.AddViolation(new WhitespaceViolation(
-                        File, SemiLineNo, ErrMsg.str()));
+                        File.str(), SemiLineNo, ErrMsg.str()));
             } else {
                 CheckLocationWhitespace(DeclEndLoc, SemiLoc, 0, SM, LangOpts);
             }
@@ -481,7 +481,7 @@ void FunctionBodyWhitespaceChecker::run(
             std::stringstream ErrMsg;
             ErrMsg << "A function's return type should be on the same line as "
                       "its name.";
-            GlobalViolationManager.AddViolation(new WhitespaceViolation(File,
+            GlobalViolationManager.AddViolation(new WhitespaceViolation(File.str(),
                     SM.getExpansionLineNumber(Node->getBeginLoc()),
                     ErrMsg.str()));
         }
@@ -498,7 +498,7 @@ void FunctionBodyWhitespaceChecker::run(
             std::stringstream ErrMsg;
             ErrMsg << "Function declarations should look like func_name(...";
             GlobalViolationManager.AddViolation(new WhitespaceViolation(
-                    File, SM.getExpansionLineNumber(LParenLoc), ErrMsg.str()));
+                    File.str(), SM.getExpansionLineNumber(LParenLoc), ErrMsg.str()));
         } else {
             CheckLocationWhitespace(NameEndLoc, LParenLoc, 0, SM, LangOpts);
         }

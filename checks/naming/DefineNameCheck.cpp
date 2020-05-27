@@ -50,7 +50,7 @@ void DefineNameChecker::EndOfMainFile() {
 
                     GlobalViolationManager.AddInfractedName(Name.str());
                     GlobalViolationManager.AddViolation(
-                            new NamingViolation(File, LineNo, ErrMsg.str()));
+                            new NamingViolation(File.str(), LineNo, ErrMsg.str()));
                 }
             }
         }

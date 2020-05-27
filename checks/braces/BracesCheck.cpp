@@ -35,7 +35,7 @@ void CheckBraceIsAtEndOfLine(
         ErrMsg << "Opening brace is not the last character on a line.";
 
         GlobalViolationManager.AddViolation(
-                new BracesViolation(File, LineNo, ErrMsg.str()));
+                new BracesViolation(File.str(), LineNo, ErrMsg.str()));
     }
 }
 

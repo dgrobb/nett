@@ -46,7 +46,7 @@ void FuncLengthChecker::run(const MatchFinder::MatchResult& Result) {
 
                         GlobalViolationManager.AddViolation(
                                 new OverallViolation(
-                                        File, LineNo, ErrMsg.str()));
+                                        File.str(), LineNo, ErrMsg.str()));
                     }
                 }
             }

@@ -44,7 +44,7 @@ void GlobalVarCommentChecker::run(const MatchFinder::MatchResult& Result) {
             std::stringstream ErrMsg;
             ErrMsg << "Global variables should be commented.";
             GlobalViolationManager.AddViolation(
-                    new CommentsViolation(File, VarLineNo, ErrMsg.str()));
+                    new CommentsViolation(File.str(), VarLineNo, ErrMsg.str()));
         }
     }
 }

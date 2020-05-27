@@ -26,7 +26,7 @@ void KeywordRedefChecker::MacroDefined(
             ErrMsg << "Do not #define a keyword to something else.";
 
             GlobalViolationManager.AddViolation(
-                    new OverallViolation(File, LineNo, ErrMsg.str()));
+                    new OverallViolation(File.str(), LineNo, ErrMsg.str()));
         }
     }
 }

@@ -53,7 +53,7 @@ class FunctionASTVisitor
 
                 auto LineNo = SM.getExpansionLineNumber(OpenBraceLoc);
                 GlobalViolationManager.AddViolation(
-                        new BracesViolation(File, LineNo, ErrMsg.str()));
+                        new BracesViolation(File.str(), LineNo, ErrMsg.str()));
             }
         }
 
@@ -72,7 +72,7 @@ class FunctionASTVisitor
 
                     auto LineNo = SM.getExpansionLineNumber(RBraceLoc);
                     GlobalViolationManager.AddViolation(
-                            new BracesViolation(File, LineNo, ErrMsg.str()));
+                            new BracesViolation(File.str(), LineNo, ErrMsg.str()));
                 }
             }
             if (!llvm::isa<clang::IfStmt>(Stmt->getElse())) {
@@ -92,7 +92,7 @@ class FunctionASTVisitor
 
                         auto LineNo = SM.getExpansionLineNumber(LBraceLoc);
                         GlobalViolationManager.AddViolation(new BracesViolation(
-                                File, LineNo, ErrMsg.str()));
+                                File.str(), LineNo, ErrMsg.str()));
                     }
                 }
             }
@@ -121,7 +121,7 @@ class FunctionASTVisitor
 
                 auto LineNo = SM.getExpansionLineNumber(OpenBraceLoc);
                 GlobalViolationManager.AddViolation(
-                        new BracesViolation(File, LineNo, ErrMsg.str()));
+                        new BracesViolation(File.str(), LineNo, ErrMsg.str()));
             }
         }
         return true;
@@ -145,7 +145,7 @@ class FunctionASTVisitor
 
                 auto LineNo = SM.getExpansionLineNumber(OpenBraceLoc);
                 GlobalViolationManager.AddViolation(
-                        new BracesViolation(File, LineNo, ErrMsg.str()));
+                        new BracesViolation(File.str(), LineNo, ErrMsg.str()));
             }
 
             // Check the position of the closing curly brace before the while
@@ -158,7 +158,7 @@ class FunctionASTVisitor
 
                 auto LineNo = SM.getExpansionLineNumber(CloseBraceLoc);
                 GlobalViolationManager.AddViolation(
-                        new BracesViolation(File, LineNo, ErrMsg.str()));
+                        new BracesViolation(File.str(), LineNo, ErrMsg.str()));
             }
         }
         return true;
@@ -182,7 +182,7 @@ class FunctionASTVisitor
 
                 auto LineNo = SM.getExpansionLineNumber(OpenBraceLoc);
                 GlobalViolationManager.AddViolation(
-                        new BracesViolation(File, LineNo, ErrMsg.str()));
+                        new BracesViolation(File.str(), LineNo, ErrMsg.str()));
             }
         }
         return true;
@@ -206,7 +206,7 @@ class FunctionASTVisitor
 
                 auto LineNo = SM.getExpansionLineNumber(OpenBraceLoc);
                 GlobalViolationManager.AddViolation(
-                        new BracesViolation(File, LineNo, ErrMsg.str()));
+                        new BracesViolation(File.str(), LineNo, ErrMsg.str()));
             }
         }
         return true;
@@ -230,7 +230,7 @@ class FunctionASTVisitor
                 auto File = SM.getFilename(Stmt->getBeginLoc());
                 auto LineNo = SM.getExpansionLineNumber(OpenBraceLoc);
                 GlobalViolationManager.AddViolation(
-                        new BracesViolation(File, LineNo, ErrMsg.str()));
+                        new BracesViolation(File.str(), LineNo, ErrMsg.str()));
             }
         }
 
@@ -276,7 +276,7 @@ void FunctionBodyBracesChecker::run(const MatchFinder::MatchResult& Result) {
 
             auto LineNo = SM.getExpansionLineNumber(BodyLBraceLoc);
             GlobalViolationManager.AddViolation(
-                    new BracesViolation(File, LineNo, ErrMsg.str()));
+                    new BracesViolation(File.str(), LineNo, ErrMsg.str()));
         }
         if (BodyLBraceLine != ParamEndLine &&
                 SM.getSpellingColumnNumber(BodyLBraceLoc) != 1) {
@@ -286,7 +286,7 @@ void FunctionBodyBracesChecker::run(const MatchFinder::MatchResult& Result) {
 
             auto LineNo = SM.getExpansionLineNumber(BodyLBraceLoc);
             GlobalViolationManager.AddViolation(
-                    new BracesViolation(File, LineNo, ErrMsg.str()));
+                    new BracesViolation(File.str(), LineNo, ErrMsg.str()));
         }
 
         FunctionASTVisitor Visitor(Result.Context);
@@ -314,7 +314,7 @@ static void CheckForMissingBraces(
         ErrMsg << "Braces are required, even for single line blocks.";
 
         GlobalViolationManager.AddViolation(
-                new BracesViolation(File, LineNo, ErrMsg.str()));
+                new BracesViolation(File.str(), LineNo, ErrMsg.str()));
     }
 }
 

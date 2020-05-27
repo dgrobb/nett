@@ -49,7 +49,7 @@ void EnumBracesChecker::run(const MatchFinder::MatchResult& Result) {
             ErrMsg << "Opening braces should look like: enum X {";
 
             GlobalViolationManager.AddViolation(
-                    new BracesViolation(File, LineNo, ErrMsg.str()));
+                    new BracesViolation(File.str(), LineNo, ErrMsg.str()));
         }
 
         // Check that the brace is the last thing on the line

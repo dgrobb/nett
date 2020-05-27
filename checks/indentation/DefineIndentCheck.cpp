@@ -47,7 +47,7 @@ void DefineIndentChecker::MacroDefined(
                << ".";
 
         GlobalViolationManager.AddViolation(
-                new IndentationViolation(File, LocLineNo, ErrMsg.str()));
+                new IndentationViolation(File.str(), LocLineNo, ErrMsg.str()));
     }
 }
 

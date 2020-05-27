@@ -54,7 +54,6 @@ void CheckEnumBodyIndentation(const clang::EnumDecl* Decl,
 
         auto EnumBodyRange = Decl->getBraceRange();
         auto BraceEndLoc = EnumBodyRange.getEnd().getLocWithOffset(-1);
-        auto& SM = Context->getSourceManager();
         auto LangOpts = Context->getLangOpts();
 
         CheckSourceRangeContinuationIndent(EnumBodyRange.getBegin(),

@@ -44,17 +44,17 @@ void FunctionCommentChecker::run(const MatchFinder::MatchResult& Result) {
         // Once we know the status of the comment, we update the comment
         // manager. This will automatically add violations for us later once all
         // the checks are completed.
-        if (!GlobalFunctionCommentManager.DeclNameHasBeenSeen(FuncName)) {
-            GlobalFunctionCommentManager.MarkDeclNameAsSeen(FuncName);
+        if (!GlobalFunctionCommentManager.DeclNameHasBeenSeen(FuncName.str())) {
+            GlobalFunctionCommentManager.MarkDeclNameAsSeen(FuncName.str());
         }
 
         if (Node->isThisDeclarationADefinition()) {
             GlobalFunctionCommentManager.SetDefinitionLocation(
-                    FuncName, File, FuncLineNo);
+                    FuncName.str(), File.str(), FuncLineNo);
         }
 
         if (HasComment) {
-            GlobalFunctionCommentManager.MarkDeclNameAsCommented(FuncName);
+            GlobalFunctionCommentManager.MarkDeclNameAsCommented(FuncName.str());
         }
     }
 }

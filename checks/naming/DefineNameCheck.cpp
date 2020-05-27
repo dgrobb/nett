@@ -43,7 +43,7 @@ void DefineNameChecker::EndOfMainFile() {
 
             if (!nett::naming::IdentifierFollowsNamingStyle(
                         Name, nett::naming::UPPER_SNAKE_CASE)) {
-                if (!GlobalViolationManager.NameHasBeenInfracted(Name)) {
+                if (!GlobalViolationManager.NameHasBeenInfracted(Name.str())) {
                     std::stringstream ErrMsg;
                     ErrMsg << "'" << Name.str()
                            << "' misnamed. #defines should be NAMED_LIKE_THIS.";

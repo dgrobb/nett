@@ -371,9 +371,9 @@ class TestWhitespaceChecks(unittest.TestCase):
             "Line 6: [WHITESPACE] 'b' at position 31, expected 1 space, found 2",
             "Line 7: [WHITESPACE] 'DIM' at position 12, expected 0 spaces, found 1",
             "Line 7: [WHITESPACE] ']' at position 16, expected 0 spaces, found 1",
-            "Line 8: [WHITESPACE] Opening brackets should look like: [X...",
             "Line 8: [WHITESPACE] '[' at position 11, expected 0 spaces, found 1",
             "Line 8: [WHITESPACE] '[' at position 15, expected 0 spaces, found 1",
+            "Line 8: [WHITESPACE] Opening brackets should look like: [X...",
             "Line 10: [WHITESPACE] Closing brackets should look like: ...X]",
             "Line 14: [WHITESPACE] Pointers should be a* b or a *b, not a * b.",
             "Line 15: [WHITESPACE] Pointers should not be split across lines.",
@@ -385,9 +385,9 @@ class TestWhitespaceChecks(unittest.TestCase):
             "Line 19: [WHITESPACE] Pointers should consistently be a* b or a *b, not a mix.",
             "Line 20: [WHITESPACE] Pointers should consistently be a* b or a *b, not a mix.",
             "Line 21: [WHITESPACE] ',' at position 13, expected 0 spaces, found 1",
-            "Line 21: [WHITESPACE] Pointers should be a* b or a *b, not a*b.",
             "Line 21: [WHITESPACE] '*' at position 16, expected 1 space, found 2",
             "Line 21: [WHITESPACE] 'm' at position 18, expected 0 spaces, found 1",
+            "Line 21: [WHITESPACE] Pointers should be a* b or a *b, not a*b.",
             ""
         ])
 

@@ -35,7 +35,7 @@ void RecordFieldNameChecker::run(const MatchFinder::MatchResult& Result) {
                     Name, nett::naming::LOWER_CAMEL_CASE)) {
             std::stringstream ErrMsg;
 
-            if (!GlobalViolationManager.NameHasBeenInfracted(Name)) {
+            if (!GlobalViolationManager.NameHasBeenInfracted(Name.str())) {
                 ErrMsg << "'" << Name.str()
                        << "' misnamed. Struct/Union fields should be "
                           "namedLikeThis.";
@@ -54,7 +54,7 @@ void RecordFieldNameChecker::run(const MatchFinder::MatchResult& Result) {
         if (nett::naming::IsHungarianVarName(Name, Node->getType())) {
             std::stringstream ErrMsg;
 
-            if (!GlobalViolationManager.NameHasBeenInfracted(Name)) {
+            if (!GlobalViolationManager.NameHasBeenInfracted(Name.str())) {
                 ErrMsg << "'" << Name.str()
                        << "' misnamed. Hungarian notation is not to be used.";
 

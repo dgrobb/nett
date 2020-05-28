@@ -736,55 +736,66 @@ void CheckGeneralSpacing(llvm::Optional<clang::Token> CurrentToken,
 void CheckSourceRangeWhitespaceTokens(clang::SourceLocation StartLoc,
         clang::SourceLocation EndLoc, clang::SourceManager& SM,
         clang::LangOptions LangOpts) {
+    
+    clang::Token CurrentToken;
+    clang::Token NextToken;
 
-    auto CurrentToken = clang::Lexer::findNextToken(
-            StartLoc.getLocWithOffset(-1), SM, LangOpts);
-    auto NextToken = CurrentToken;
-
+    StartLoc = GetNextNonWhitespaceLoc(StartLoc, SM);
+    clang::Lexer::getRawToken(StartLoc, CurrentToken, SM, LangOpts);
+    
     do {
-        NextToken = clang::Lexer::findNextToken(
-                CurrentToken->getEndLoc().getLocWithOffset(-1), SM, LangOpts);
+        auto CurrEndLoc = CurrentToken.getEndLoc();
+        auto NextStartLoc = GetNextNonWhitespaceLoc(CurrEndLoc, SM);
+        clang::Lexer::getRawToken(NextStartLoc, NextToken, SM, LangOpts);
 
-        if (NextToken->getLocation() > EndLoc ||
-                CurrentToken->getLocation() == NextToken->getLocation()) {
+        if (NextToken.getLocation() > EndLoc ||
+                CurrentToken.getLocation() == NextToken.getLocation()) {
              break;
         }
 
-        CheckPointerSpacing(CurrentToken, NextToken, SM, LangOpts, StartLoc, EndLoc);
-        CheckSquareBracketSpacing(CurrentToken, NextToken, SM, LangOpts);
-        CheckParenthesisSpacing(CurrentToken, NextToken, SM, LangOpts);
-        CheckCommaSpacing(CurrentToken, NextToken, SM, LangOpts);
-        CheckGeneralSpacing(CurrentToken, NextToken, SM, LangOpts);
+        auto CurrTok = llvm::Optional<clang::Token>(CurrentToken);
+        auto NextTok = llvm::Optional<clang::Token>(NextToken);
+        
+        CheckPointerSpacing(CurrTok, NextTok, SM, LangOpts, StartLoc, EndLoc);
+        CheckSquareBracketSpacing(CurrTok, NextTok, SM, LangOpts);
+        CheckParenthesisSpacing(CurrTok, NextTok, SM, LangOpts);
+        CheckCommaSpacing(CurrTok, NextTok, SM, LangOpts);
+        CheckGeneralSpacing(CurrTok, NextTok, SM, LangOpts);
 
         CurrentToken = NextToken;
-    } while (clang::Lexer::getLocForEndOfToken(
-                     NextToken->getLocation(), 1, SM, LangOpts) <= EndLoc);
+    } while (NextToken.getLocation() <= EndLoc);
 }
 
 void CheckSourceRangeWhitespaceTokensNoPointers(clang::SourceLocation StartLoc,
         clang::SourceLocation EndLoc, clang::SourceManager& SM,
         clang::LangOptions LangOpts) {
+    
+    clang::Token CurrentToken;
+    clang::Token NextToken;
 
-    auto CurrentToken = clang::Lexer::findNextToken(
-            StartLoc.getLocWithOffset(-1), SM, LangOpts);
-    auto NextToken = CurrentToken;
+    StartLoc = GetNextNonWhitespaceLoc(StartLoc, SM);
+    clang::Lexer::getRawToken(StartLoc, CurrentToken, SM, LangOpts);
+    
     do {
-        NextToken = clang::Lexer::findNextToken(
-                CurrentToken->getEndLoc().getLocWithOffset(-1), SM, LangOpts);
-        if (NextToken->getLocation() > EndLoc ||
-                CurrentToken->getLocation() == NextToken->getLocation()) {
-            break;
+        auto CurrEndLoc = CurrentToken.getEndLoc();
+        auto NextStartLoc = GetNextNonWhitespaceLoc(CurrEndLoc, SM);
+        clang::Lexer::getRawToken(NextStartLoc, NextToken, SM, LangOpts);
+
+        if (NextToken.getLocation() > EndLoc ||
+                CurrentToken.getLocation() == NextToken.getLocation()) {
+             break;
         }
 
-        CheckSquareBracketSpacing(CurrentToken, NextToken, SM, LangOpts);
-        CheckParenthesisSpacing(CurrentToken, NextToken, SM, LangOpts);
-        CheckCurlyBraceSpacing(CurrentToken, NextToken, SM, LangOpts);
-        CheckCommaSpacing(CurrentToken, NextToken, SM, LangOpts);
-        CheckGeneralSpacing(CurrentToken, NextToken, SM, LangOpts);
+        auto CurrTok = llvm::Optional<clang::Token>(CurrentToken);
+        auto NextTok = llvm::Optional<clang::Token>(NextToken);
+        
+        CheckSquareBracketSpacing(CurrTok, NextTok, SM, LangOpts);
+        CheckParenthesisSpacing(CurrTok, NextTok, SM, LangOpts);
+        CheckCommaSpacing(CurrTok, NextTok, SM, LangOpts);
+        CheckGeneralSpacing(CurrTok, NextTok, SM, LangOpts);
 
         CurrentToken = NextToken;
-    } while (clang::Lexer::getLocForEndOfToken(
-                     NextToken->getLocation(), 1, SM, LangOpts) <= EndLoc);
+    } while (NextToken.getLocation() <= EndLoc);
 }
 
 }  // namespace whitespace

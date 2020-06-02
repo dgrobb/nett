@@ -98,7 +98,7 @@ bool ViolationComparator(Violation* V1, Violation* V2) {
         }
 
         // Otherwise, we order them by their messages
-        return V1->GetMessage().compare(V2->GetMessage());
+        return V1->GetMessage().compare(V2->GetMessage()) < 0;
     }
 
     // Otherwise compare them by filepath

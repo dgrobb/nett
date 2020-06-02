@@ -6,6 +6,7 @@
 #include "../../violations/ViolationManager.hpp"
 #include "../utils/Tokens.hpp"
 #include "../utils/Typedef.hpp"
+#include "../whitespace/WhitespaceCheck.hpp"
 #include "EnumBodyIndentCheck.hpp"
 #include "IndentCheck.hpp"
 #include "StructUnionBodyIndentCheck.hpp"
@@ -178,13 +179,14 @@ class FunctionASTVisitor
 
     bool VisitSwitchStmt(clang::SwitchStmt* Stmt) {
 
-        auto LParenLoc = clang::Lexer::findNextToken(Stmt->getSwitchLoc(),
-                Context->getSourceManager(), Context->getLangOpts())
-                                 ->getLocation();
-        auto RParenLoc =
-                clang::Lexer::findNextToken(Stmt->getCond()->getEndLoc(),
-                        Context->getSourceManager(), Context->getLangOpts())
-                        ->getLocation();
+        auto& SM = Context->getSourceManager();
+        auto LangOpts = Context->getLangOpts();
+
+        auto LParenLoc = whitespace::GetNextNonWhitespaceLoc(
+                Stmt->getSwitchLoc().getLocWithOffset(5), SM);
+        
+        auto RParenLoc = whitespace::GetPreviousNonWhitespaceLoc(
+                Stmt->getBody()->getBeginLoc().getLocWithOffset(-1), SM);
 
         if (llvm::isa<clang::CompoundStmt>(Stmt->getBody())) {
             CheckStatementIndentation(Stmt->getBeginLoc(), Context,
@@ -486,10 +488,13 @@ class FunctionASTVisitor
                     CurrentNestingLevel + SwitchNestingLevel);
         }
 
-        // Check the condition's continuation indent
-        auto LParenLoc = clang::Lexer::findNextToken(Node->getWhileLoc(),
-                Context->getSourceManager(), Context->getLangOpts())
-                                 ->getLocation();
+        auto& SM = Context->getSourceManager();
+        auto LangOpts = Context->getLangOpts();
+
+        // Finally, we check the condition's continuation indent
+        auto LParenLoc = whitespace::GetNextNonWhitespaceLoc(
+                Node->getWhileLoc().getLocWithOffset(5), SM);
+        
         auto RParenLoc = Node->getRParenLoc();
 
         CheckSourceRangeContinuationIndent(LParenLoc.getLocWithOffset(1),
@@ -523,14 +528,15 @@ class FunctionASTVisitor
                     CurrentNestingLevel + SwitchNestingLevel);
         }
 
+        auto& SM = Context->getSourceManager();
+        auto LangOpts = Context->getLangOpts();
+
         // Finally, we check the condition's continuation indent
-        auto LParenLoc = clang::Lexer::findNextToken(Node->getWhileLoc(),
-                Context->getSourceManager(), Context->getLangOpts())
-                                 ->getLocation();
-        auto RParenLoc =
-                clang::Lexer::findNextToken(Node->getCond()->getEndLoc(),
-                        Context->getSourceManager(), Context->getLangOpts())
-                        ->getLocation();
+        auto LParenLoc = whitespace::GetNextNonWhitespaceLoc(
+                Node->getWhileLoc().getLocWithOffset(5), SM);
+        
+        auto RParenLoc = whitespace::GetPreviousNonWhitespaceLoc(
+                Node->getBody()->getBeginLoc().getLocWithOffset(-1), SM);
 
         CheckSourceRangeContinuationIndent(LParenLoc.getLocWithOffset(1),
                 RParenLoc.getLocWithOffset(-1), Context,
@@ -600,16 +606,16 @@ class FunctionASTVisitor
                 }
             }
         }
+        auto& SM = Context->getSourceManager();
+        auto LangOpts = Context->getLangOpts();
 
         // We also need to check the if condition's continuation indent
-        auto LParenLoc = clang::Lexer::findNextToken(Node->getIfLoc(),
-                Context->getSourceManager(), Context->getLangOpts())
-                                 ->getLocation();
-        auto RParenLoc =
-                clang::Lexer::findNextToken(Node->getCond()->getEndLoc(),
-                        Context->getSourceManager(), Context->getLangOpts())
-                        ->getLocation();
-
+        auto LParenLoc = whitespace::GetNextNonWhitespaceLoc(
+                Node->getIfLoc().getLocWithOffset(2), SM);
+        
+        auto RParenLoc = whitespace::GetPreviousNonWhitespaceLoc(
+                Node->getThen()->getBeginLoc().getLocWithOffset(-1), SM);
+        
         if (IsElseBranch) {
             CheckSourceRangeContinuationIndent(LParenLoc.getLocWithOffset(1),
                     RParenLoc.getLocWithOffset(-1), Context,

@@ -62,7 +62,7 @@ repository under `llvm-project/clang-tools-extra`.
 The repository can be cloned using
 
 ```
-$ git clone https://github.com/llvm/llvm-project.git
+$ git clone --branch llvmorg-10.0.0 https://github.com/llvm/llvm-project.git
 ```
 
 and the Nett source files can be added via a git 
@@ -95,6 +95,15 @@ the following can be run:
 ```
 $ cd llvm-project/build
 $ ninja nett
+```
+
+## Tests
+
+To check that the program runs correctly, you can run the 
+test suite as follows:
+
+```
+$ python3 nett/test/runner.py
 ```
 
 ## License

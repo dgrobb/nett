@@ -2,7 +2,7 @@
  *  Full license notice can be found in Nett.cpp
  */
 #include "FunctionCommentCheck.hpp"
-
+#include "../whitespace/FunctionDefinitionManager.hpp"
 #include "CommentManager.hpp"
 
 #include <sstream>
@@ -51,6 +51,16 @@ void FunctionCommentChecker::run(const MatchFinder::MatchResult& Result) {
         if (Node->isThisDeclarationADefinition()) {
             GlobalFunctionCommentManager.SetDefinitionLocation(
                     FuncName.str(), File.str(), FuncLineNo);
+
+            if (HasComment) {
+                GlobalFunctionDefinitionManager.AddDefinition(File.str(),
+                        FuncName.str(), SM.getExpansionLineNumber(RawComment->getBeginLoc()),
+                        SM.getExpansionLineNumber(Node->getEndLoc()));
+            } else {
+                GlobalFunctionDefinitionManager.AddDefinition(File.str(),
+                        FuncName.str(), SM.getExpansionLineNumber(Node->getBeginLoc()),
+                        SM.getExpansionLineNumber(Node->getEndLoc()));
+            }
         }
 
         if (HasComment) {

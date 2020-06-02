@@ -48,6 +48,7 @@
 #include "checks/whitespace/UnaryOperatorWhitespaceCheck.hpp"
 #include "checks/whitespace/VarDeclWhitespaceCheck.hpp"
 #include "checks/whitespace/TernaryOperatorWhitespaceCheck.hpp"
+#include "checks/whitespace/FunctionDefinitionManager.hpp"
 #include "input/FileInput.hpp"
 #include "output/OutputColors.hpp"
 #include "output/UserOutput.hpp"
@@ -385,6 +386,7 @@ int main(int Argc, const char** Argv) {
     // Some of the checks (e.g. function comments) can only be done once
     // everything has been processed. We do those checks here.
     GlobalFunctionCommentManager.GenerateCommentViolations();
+    GlobalFunctionDefinitionManager.GenerateWhitespaceViolations();
 
     // Once the checks are done, we output the violations.
     // We need to get the full paths to each of the files due to the way

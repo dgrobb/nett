@@ -128,8 +128,8 @@ class TestIndentationChecks(unittest.TestCase):
 
         expected_output = "\n".join([
             "Line 1: [INDENTATION] 'int' Expected indent of 0 spaces, found 2.",
-            "Line 9: [INDENTATION] 'int' Expected indent of 0 spaces, found 6.",
-            "Line 11: [INDENTATION] '}' Expected indent of 0 spaces, found 3.",
+            "Line 8: [INDENTATION] 'int' Expected indent of 0 spaces, found 6.",
+            "Line 10: [INDENTATION] '}' Expected indent of 0 spaces, found 3.",
             ""
         ])
 

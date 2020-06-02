@@ -392,3 +392,16 @@ class TestWhitespaceChecks(unittest.TestCase):
         ])
 
         self.assertEqual(expected_output, extracted_output)
+
+    def test_function_separation_whitespace_check(self):
+        stdout = subprocess.check_output([NETT_PATH, TEST_PATH + "/test_files/whitespace/functionSeparationWhitespaceCheckTest.c"])
+        extracted_output = "\n".join(stdout.decode("utf-8").split('\n')[1:])
+
+        expected_output = "\n".join([   
+            "Line 9: [WHITESPACE] Functions should be separated by reasonable whitespace.",
+            "Line 12: [COMMENTS] Functions should be preceded by explanatory comments.",
+            "Line 15: [WHITESPACE] Functions should be separated by reasonable whitespace.",
+            ""
+        ])
+
+        self.assertEqual(expected_output, extracted_output)

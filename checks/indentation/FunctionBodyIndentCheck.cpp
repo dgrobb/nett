@@ -240,7 +240,8 @@ class FunctionASTVisitor
                 // variables in a switch must be declared at the top (before any
                 // cases) if not using braces
                 CheckStatementIndentation(
-                        Decl->getBeginLoc(), Context, CurrentNestingLevel);
+                        Decl->getBeginLoc(), Context, 
+                        CurrentNestingLevel + SwitchNestingLevel);
                 CheckSourceRangeContinuationIndent(Decl->getBeginLoc(),
                         Decl->getEndLoc(), Context, CurrentNestingLevel,
                         SwitchNestingLevel);

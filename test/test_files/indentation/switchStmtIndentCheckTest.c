@@ -88,3 +88,15 @@ int main(int argc, char** argv) {
 
     return x;
 }
+
+// A comment
+void method(int argc) {
+
+    switch (argc) {
+        case 3: {
+            int x = argc++;
+            argc--;
+            int y = argc;
+        }
+    }
+}

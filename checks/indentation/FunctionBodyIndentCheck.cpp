@@ -455,10 +455,13 @@ class FunctionASTVisitor
         }
 
         // Check the condition's continuation indent
+        auto Level = SwitchNestingLevel > 0 ? 
+                    CurrentNestingLevel - SwitchNestingLevel : CurrentNestingLevel;
+
         CheckSourceRangeContinuationIndent(
                 Node->getLParenLoc().getLocWithOffset(1),
                 Node->getRParenLoc().getLocWithOffset(-1), Context,
-                CurrentNestingLevel + SwitchNestingLevel, SwitchNestingLevel);
+                Level + SwitchNestingLevel, SwitchNestingLevel);
 
         return true;
     }
@@ -497,9 +500,12 @@ class FunctionASTVisitor
         
         auto RParenLoc = Node->getRParenLoc();
 
+        auto Level = SwitchNestingLevel > 0 ? 
+                    CurrentNestingLevel - SwitchNestingLevel : CurrentNestingLevel;
+
         CheckSourceRangeContinuationIndent(LParenLoc.getLocWithOffset(1),
                 RParenLoc.getLocWithOffset(-1), Context,
-                CurrentNestingLevel + SwitchNestingLevel, SwitchNestingLevel);
+                Level + SwitchNestingLevel, SwitchNestingLevel);
 
         return true;
     }
@@ -538,9 +544,12 @@ class FunctionASTVisitor
         auto RParenLoc = whitespace::GetPreviousNonWhitespaceLoc(
                 Node->getBody()->getBeginLoc().getLocWithOffset(-1), SM);
 
+        auto Level = SwitchNestingLevel > 0 ? 
+                    CurrentNestingLevel - SwitchNestingLevel : CurrentNestingLevel;
+                    
         CheckSourceRangeContinuationIndent(LParenLoc.getLocWithOffset(1),
                 RParenLoc.getLocWithOffset(-1), Context,
-                CurrentNestingLevel + SwitchNestingLevel, SwitchNestingLevel);
+                Level + SwitchNestingLevel, SwitchNestingLevel);
 
         return true;
     }
@@ -616,15 +625,17 @@ class FunctionASTVisitor
         auto RParenLoc = whitespace::GetPreviousNonWhitespaceLoc(
                 Node->getThen()->getBeginLoc().getLocWithOffset(-1), SM);
         
+        auto Level = SwitchNestingLevel > 0 ? 
+                    CurrentNestingLevel - SwitchNestingLevel : CurrentNestingLevel;
         if (IsElseBranch) {
             CheckSourceRangeContinuationIndent(LParenLoc.getLocWithOffset(1),
                     RParenLoc.getLocWithOffset(-1), Context,
-                    CurrentNestingLevel + SwitchNestingLevel - 1,
+                    Level + SwitchNestingLevel - 1,
                     SwitchNestingLevel);
         } else {
             CheckSourceRangeContinuationIndent(LParenLoc.getLocWithOffset(1),
                     RParenLoc.getLocWithOffset(-1), Context,
-                    CurrentNestingLevel + SwitchNestingLevel,
+                    Level + SwitchNestingLevel,
                     SwitchNestingLevel);
         }
 

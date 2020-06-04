@@ -43,4 +43,48 @@ int main(int argc, char** argv) {
                     x--;
             return x;
         }
+    return 0;
+}
+
+// A function
+void blah(int argc) {
+    switch (argc) {
+        case 2:
+            switch (argc) {
+                case 4:
+                    if (argc == 1 || argc == 2 ||
+                            argc == 3) {
+                        return;
+                    } else if (argc == 5 ||
+                            argc == 6) {
+                        return;
+                    } else {
+                        return;
+                    }
+            }
+        case 3:
+            switch (argc) {
+                case 3:
+                    for (int i = 0; i < argc;
+                            i++) {
+                        break;
+                    }
+            }
+        case 4:
+            switch (argc) {
+                case 3:
+                    do {
+                        break;
+                    } while (argc == 2 && argc == 3 &&
+                            argc == 4);
+            }
+        case 5:
+            switch (argc) {
+                case 3:
+                    while (argc == 4 &&
+                            argc == 5) {
+                        break;
+                    }
+            }
+    }
 }

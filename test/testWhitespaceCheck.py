@@ -130,7 +130,7 @@ class TestWhitespaceChecks(unittest.TestCase):
             "Line 12: [WHITESPACE] Member accesses should look like: X->a",
             "Line 20: [WHITESPACE] 'pear' at position 8, expected 0 spaces, found 1",
             "Line 21: [WHITESPACE] '.' at position 7, expected 0 spaces, found 1",
-            "Line 22: [WHITESPACE] Member accesses should look like: X.a",
+            "Line 22: [WHITESPACE] '.' at position 7, expected 0 spaces, found 1",
             ""
         ])
 

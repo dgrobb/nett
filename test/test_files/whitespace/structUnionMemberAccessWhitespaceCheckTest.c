@@ -21,6 +21,8 @@ int main(int argc, char** argv) {
     b .apple = 1;   // incorrect
     b .
             apple = 1;  // incorrect
-    
+    b.
+            apple = 1;  // correct
+            
     return 0;
 }

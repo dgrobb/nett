@@ -3,12 +3,15 @@
 
 // A constant
 const char global <: :> = "A string??/n";
-// Another one
+// Another one <:  ??(  ??)
 const char oneMore ??( ??) = "Another ??|";
 // And one more
 const char another[] = "??-";
 
-// A random function
+// A random function <%d>
+/*
+      <% %>   ??)
+*/
 int blah(void) <%
     // no body here
 %>

@@ -18,7 +18,7 @@ void FunctionCommentChecker::run(const MatchFinder::MatchResult& Result) {
     if (const auto* Node =
                     Result.Nodes.getNodeAs<clang::FunctionDecl>("funcDecl")) {
         const auto& SM = *Result.SourceManager;
-        const auto& Loc = Node->getBeginLoc();
+        const auto& Loc = SM.getFileLoc(Node->getBeginLoc());
 
         auto File = SM.getFilename(Loc);
         auto FuncLineNo = SM.getExpansionLineNumber(Loc);
@@ -51,7 +51,7 @@ void FunctionCommentChecker::run(const MatchFinder::MatchResult& Result) {
         if (Node->isThisDeclarationADefinition()) {
             GlobalFunctionCommentManager.SetDefinitionLocation(
                     FuncName.str(), File.str(), FuncLineNo);
-
+            
             if (HasComment) {
                 GlobalFunctionDefinitionManager.AddDefinition(File.str(),
                         FuncName.str(), SM.getExpansionLineNumber(RawComment->getBeginLoc()),

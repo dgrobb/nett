@@ -14,7 +14,7 @@ namespace nett {
 namespace input {
 
 static const char TAB_REPLACEMENT[] = "        ";
-static const uint MAX_LINE_LENGTH = 80;
+static const uint MAX_LINE_LENGTH = 79;
 static const char* C_DIGRAPHS[] = {"<:", ":>", "<%", "%>", "%:", "%:%:"};
 static const char* C_TRIGRAPHS[] = {"\?\?=", "\?\?/", "\?\?'", "\?\?(", "\?\?)",
         "\?\?!", "\?\?<", "\?\?>", "\?\?-"};

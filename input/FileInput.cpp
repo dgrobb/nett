@@ -126,13 +126,35 @@ static bool SubstringInMultiLineComment(char* Substring,
     return CommentStart <= Substring && Substring <= CommentEnd;
 }
 
+// Checks if the given substring is inside double quotes ("") 
+// Returns true if it is, else returns false.
+static bool SubstringInDoubleQuotes(char* Substring,
+        const char* Content) {
+    
+    // We know that a substring is within double quotes
+    // if there is an odd number of double quotes 
+    // preceding it in the file.
+    int QuoteCount = 0;
+    auto StartLoc = Substring;
+
+    while (StartLoc > Content) {
+        if (*StartLoc == '"') {
+            QuoteCount++;
+        }
+        StartLoc--;
+    }
+    
+    return QuoteCount % 2 == 1;
+}
+
 // Checks the given file content for digraphs and trigraphs.
 static void CheckDigraphsAndTrigraphs(const std::string FilePath, 
         const std::string Content) {
 
     // We need to find the locations of each of the di/trigraphs
     // within the file content. For each *-graph, we need to
-    // check if it is contained within a comment and ignore it
+    // check if it is contained within a comment or string
+    // and ignore it
     // if that is the case.
     char* String = new char[Content.length() + 1];
     std::strcpy(String, Content.c_str());
@@ -143,11 +165,12 @@ static void CheckDigraphsAndTrigraphs(const std::string FilePath,
         char* DigraphLoc;
 
         while ((DigraphLoc = strstr(CurrentLocation, Digraph))) {
-            bool InComment = 
+            bool ShouldIgnore = 
                     SubstringInSingleLineComment(DigraphLoc, String) ||
-                    SubstringInMultiLineComment(DigraphLoc, String);
+                    SubstringInMultiLineComment(DigraphLoc, String) ||
+                    SubstringInDoubleQuotes(DigraphLoc, String);
             
-            if (!InComment) {
+            if (!ShouldIgnore) {
                 NGraphsFound.push_back(DigraphLoc);
             }
             CurrentLocation = DigraphLoc + 1;
@@ -159,11 +182,12 @@ static void CheckDigraphsAndTrigraphs(const std::string FilePath,
         char* TrigraphLoc;
 
         while ((TrigraphLoc = strstr(CurrentLocation, Trigraph))) {
-            bool InComment = 
+            bool ShouldIgnore = 
                     SubstringInSingleLineComment(TrigraphLoc, String) ||
-                    SubstringInMultiLineComment(TrigraphLoc, String);
+                    SubstringInMultiLineComment(TrigraphLoc, String) ||
+                    SubstringInDoubleQuotes(TrigraphLoc, String);
             
-            if (!InComment) {
+            if (!ShouldIgnore) {
                 NGraphsFound.push_back(TrigraphLoc);
             }
             CurrentLocation = TrigraphLoc + 1;

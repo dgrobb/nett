@@ -6,7 +6,7 @@ const char global <: :> = "A string??/n";
 // Another one <:  ??(  ??)
 const char oneMore ??( ??) = "Another ??|";
 // And one more
-const char another[] = "??-";
+const char another[] = "??-  <%d>";
 
 // A random function <%d>
 /*

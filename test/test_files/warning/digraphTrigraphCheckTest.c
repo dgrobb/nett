@@ -8,7 +8,6 @@ const char oneMore ??( ??) = "Another ??|";
 // And one more
 const char another[] = "??-  <%d>";
 
-// A random function <%d>
 /*
       <% %>   ??)
 */
@@ -16,6 +15,7 @@ int blah(void) <%
     // no body here
 %>
 
+// A random function <%d>
 int main(int argc, char** argv) ??<
     return 0;
 ??>

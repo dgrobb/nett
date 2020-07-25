@@ -386,7 +386,7 @@ int main(int Argc, const char** Argv) {
     // Some of the checks (e.g. function comments) can only be done once
     // everything has been processed. We do those checks here.
     GlobalFunctionCommentManager.GenerateCommentViolations();
-    GlobalFunctionDefinitionManager.GenerateWhitespaceViolations();
+    GlobalFileContentManager.GenerateWhitespaceViolations();
 
     // Once the checks are done, we output the violations.
     // We need to get the full paths to each of the files due to the way

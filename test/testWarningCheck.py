@@ -20,8 +20,8 @@ class TestWarningChecks(unittest.TestCase):
             "Line 2: [WARNING] Digraphs and Trigraphs should not be used.",
             "Line 5: [WARNING] Digraphs and Trigraphs should not be used.",
             "Line 7: [WARNING] Digraphs and Trigraphs should not be used.",
-            "Line 15: [WARNING] Digraphs and Trigraphs should not be used.",
-            "Line 17: [WARNING] Digraphs and Trigraphs should not be used.",
+            "Line 14: [WARNING] Digraphs and Trigraphs should not be used.",
+            "Line 16: [WARNING] Digraphs and Trigraphs should not be used.",
             "Line 19: [WARNING] Digraphs and Trigraphs should not be used.",
             "Line 21: [WARNING] Digraphs and Trigraphs should not be used.",
             ""

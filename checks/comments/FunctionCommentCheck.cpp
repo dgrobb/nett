@@ -2,6 +2,7 @@
  *  Full license notice can be found in Nett.cpp
  */
 #include "FunctionCommentCheck.hpp"
+#include "../utils/Tokens.hpp"
 #include "../whitespace/FunctionDefinitionManager.hpp"
 #include "CommentManager.hpp"
 
@@ -47,25 +48,26 @@ void FunctionCommentChecker::run(const MatchFinder::MatchResult& Result) {
         if (!GlobalFunctionCommentManager.DeclNameHasBeenSeen(FuncName.str())) {
             GlobalFunctionCommentManager.MarkDeclNameAsSeen(FuncName.str());
         }
-
         if (Node->isThisDeclarationADefinition()) {
             GlobalFunctionCommentManager.SetDefinitionLocation(
                     FuncName.str(), File.str(), FuncLineNo);
-            
-            if (HasComment) {
-                GlobalFunctionDefinitionManager.AddDefinition(File.str(),
-                        FuncName.str(), SM.getExpansionLineNumber(RawComment->getBeginLoc()),
-                        SM.getExpansionLineNumber(Node->getEndLoc()));
-            } else {
-                GlobalFunctionDefinitionManager.AddDefinition(File.str(),
-                        FuncName.str(), SM.getExpansionLineNumber(Node->getBeginLoc()),
-                        SM.getExpansionLineNumber(Node->getEndLoc()));
-            }
         }
-
         if (HasComment) {
             GlobalFunctionCommentManager.MarkDeclNameAsCommented(FuncName.str());
         }
+
+        // Finally, we log the declaration/definition
+        nett::EntryInfo Info;
+        nett::EntryType Type;
+        if (Node->isThisDeclarationADefinition()) {
+            Type = nett::EntryType::ENTRY_FUNC_DEFN;
+            Info = ConstructFileEntry(Node, Result.Context, Type);
+        } else {
+            Type = nett::EntryType::ENTRY_FUNC_DECL;
+            Info = ConstructFileEntry(Node, Result.Context, Type, true);
+        }
+
+        GlobalFileContentManager.AddEntry(Info);
     }
 }
 

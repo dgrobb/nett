@@ -6,6 +6,7 @@
 #include "../../violations/ViolationManager.hpp"
 #include "../utils/Tokens.hpp"
 #include "../utils/Typedef.hpp"
+#include "../whitespace/FunctionDefinitionManager.hpp"
 #include "EnumBodyIndentCheck.hpp"
 #include "IndentCheck.hpp"
 
@@ -99,6 +100,24 @@ void StructUnionBodyIndentChecker::run(const MatchFinder::MatchResult& Result) {
         }
 
         CheckStructUnionBodyIndentation(Node, Result.Context, PP, 0, 0);
+
+        nett::EntryType Type;
+        if (Node->isUnion()) {
+            if (Node->isThisDeclarationADefinition()) {
+                Type = nett::EntryType::ENTRY_UNION_DEFN;
+            } else {
+                Type = nett::EntryType::ENTRY_UNION_DECL;
+            }
+        } else {
+            if (Node->isThisDeclarationADefinition()) {
+                Type = nett::EntryType::ENTRY_STRUCT_DEFN;
+            } else {
+                Type = nett::EntryType::ENTRY_STRUCT_DECL;
+            }
+        }
+
+        nett::EntryInfo Info = ConstructFileEntry(Node, Result.Context, Type, true);
+        GlobalFileContentManager.AddEntry(Info);
     }
 }
 

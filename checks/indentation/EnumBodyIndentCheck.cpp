@@ -6,6 +6,7 @@
 #include "../../violations/ViolationManager.hpp"
 #include "../utils/Tokens.hpp"
 #include "../utils/Typedef.hpp"
+#include "../whitespace/FunctionDefinitionManager.hpp"
 #include "IndentCheck.hpp"
 
 #include "clang/AST/ParentMap.h"
@@ -34,6 +35,17 @@ void EnumBodyIndentChecker::run(const MatchFinder::MatchResult& Result) {
         }
 
         CheckEnumBodyIndentation(Node, Result.Context, 0, 0);
+        
+        nett::EntryType Type;
+        if (Node->isThisDeclarationADefinition()) {
+            Type = nett::EntryType::ENTRY_ENUM_DEFN;
+        } else {
+            Type = nett::EntryType::ENTRY_ENUM_DECL;
+        }
+        
+        nett::EntryInfo Info = ConstructFileEntry(Node, Result.Context, Type, true);
+        GlobalFileContentManager.AddEntry(Info);
+
     }
 }
 

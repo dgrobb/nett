@@ -4,6 +4,8 @@
 #include "GlobalVarCommentCheck.hpp"
 
 #include "../../violations/ViolationManager.hpp"
+#include "../whitespace/FunctionDefinitionManager.hpp"
+#include "../utils/Tokens.hpp"
 
 #include <sstream>
 
@@ -46,6 +48,10 @@ void GlobalVarCommentChecker::run(const MatchFinder::MatchResult& Result) {
             GlobalViolationManager.AddViolation(
                     new CommentsViolation(File.str(), VarLineNo, ErrMsg.str()));
         }
+
+        nett::EntryInfo Info = ConstructFileEntry(
+                Node, Result.Context, nett::EntryType::ENTRY_GLOBAL, true);
+        GlobalFileContentManager.AddEntry(Info);
     }
 }
 

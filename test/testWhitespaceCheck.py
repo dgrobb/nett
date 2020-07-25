@@ -174,7 +174,6 @@ class TestWhitespaceChecks(unittest.TestCase):
             "Line 17: [WHITESPACE] ')' at position 14, expected 0 spaces, found 1",
             "Line 19: [WHITESPACE] else-if statements should look like: } else if (cond...",
             "Line 24: [WHITESPACE] If statements should look like: if (cond...",
-            # "Line 27: [WHITESPACE] Opening parentheses should look like: (X...",
             "Line 27: [WHITESPACE] 'else' at position 8, expected 1 space, found 2",
             "Line 27: [WHITESPACE] 'if' at position 14, expected 1 space, found 2",
             "Line 29: [WHITESPACE] Closing parentheses should look like: ...X)",
@@ -189,7 +188,6 @@ class TestWhitespaceChecks(unittest.TestCase):
 
         expected_output = "\n".join([
             "Line 3: [WHITESPACE] For loops should look like: for (...",
-            # "Line 7: [WHITESPACE] Opening parentheses should look like: (X...",
             "Line 9: [WHITESPACE] Closing parentheses should look like: ...X)",
             "Line 12: [WHITESPACE] 'int' at position 12, expected 0 spaces, found 2",
             "Line 12: [WHITESPACE] ')' at position 37, expected 0 spaces, found 3",
@@ -201,7 +199,6 @@ class TestWhitespaceChecks(unittest.TestCase):
             "Line 22: [WHITESPACE] ';' at position 20, expected 0 spaces, found 1",
             "Line 22: [WHITESPACE] ';' at position 29, expected 0 spaces, found 1",
             "Line 27: [WHITESPACE] ';' at position 12, expected 0 spaces, found 2",
-            # "Line 29: [WHITESPACE] Opening parentheses should look like: (X...",
             "Line 35: [WHITESPACE] ';' at position 24, expected 0 spaces, found 1",
             "Line 37: [WHITESPACE] Missing for loop conditions should look like: for (...;; ...",
             "Line 43: [WHITESPACE] ')' at position 35, expected 0 spaces, found 2",
@@ -220,7 +217,6 @@ class TestWhitespaceChecks(unittest.TestCase):
             "Line 10: [WHITESPACE] 'while' at position 9, expected 1 space, found 3",
             "Line 15: [WHITESPACE] '(' at position 15, expected 1 space, found 3",
             "Line 21: [WHITESPACE] Do-While loop conditions should look like: while (...",
-            # "Line 26: [WHITESPACE] Opening parentheses should look like: (X...",
             "Line 28: [WHITESPACE] Closing parentheses should look like: ...X)",
             "Line 33: [WHITESPACE] ';' at position 21, expected 0 spaces, found 2",
             "Line 36: [WHITESPACE] Do-While loop conditions should look like: ...);",
@@ -238,7 +234,6 @@ class TestWhitespaceChecks(unittest.TestCase):
         expected_output = "\n".join([
             "Line 4: [WHITESPACE] While loops should look like: while (...",
             "Line 9: [WHITESPACE] '(' at position 12, expected 1 space, found 2",
-            # "Line 14: [WHITESPACE] Opening parentheses should look like: (X...",
             "Line 16: [WHITESPACE] Closing parentheses should look like: ...X)",
             "Line 20: [WHITESPACE] 'argc' at position 13, expected 0 spaces, found 1",
             "Line 20: [WHITESPACE] ')' at position 18, expected 0 spaces, found 1",
@@ -260,7 +255,6 @@ class TestWhitespaceChecks(unittest.TestCase):
             "Line 21: [WHITESPACE] 'argc' at position 14, expected 0 spaces, found 1",
             "Line 21: [WHITESPACE] ')' at position 19, expected 0 spaces, found 1",
             "Line 23: [WHITESPACE] '{' at position 18, expected 1 space, found 2",
-            # "Line 29: [WHITESPACE] Opening parentheses should look like: (X...",
             "Line 31: [WHITESPACE] Closing parentheses should look like: ...X)",
             "Line 33: [WHITESPACE] Case statements should look like: case X:",
             "Line 39: [WHITESPACE] '{' at position 20, expected 1 space, found 2",
@@ -288,7 +282,6 @@ class TestWhitespaceChecks(unittest.TestCase):
             "Line 29: [WHITESPACE] ')' at position 43, expected 0 spaces, found 1",
             "Line 34: [WHITESPACE] ',' at position 23, expected 0 spaces, found 1",
             "Line 34: [WHITESPACE] 'char' at position 33, expected 1 space, found 2",
-            # "Line 39: [WHITESPACE] Opening parentheses should look like: (X...",
             "Line 40: [WHITESPACE] ',' at position 15, expected 0 spaces, found 1",
             "Line 40: [WHITESPACE] 'char' at position 25, expected 1 space, found 2",
             "Line 41: [WHITESPACE] Closing parentheses should look like: ...X)",
@@ -346,7 +339,6 @@ class TestWhitespaceChecks(unittest.TestCase):
 
         expected_output = "\n".join([   
             "Line 5: [WHITESPACE] '(' at position 12, expected 0 spaces, found 1",
-            # "Line 7: [WHITESPACE] Opening parentheses should look like: (X...",
             "Line 9: [WHITESPACE] Closing parentheses should look like: ...X)",
             "Line 11: [WHITESPACE] Function calls should look like: func_call(...",
             "Line 15: [WHITESPACE] ',' at position 18, expected 0 spaces, found 1",
@@ -398,9 +390,12 @@ class TestWhitespaceChecks(unittest.TestCase):
         extracted_output = "\n".join(stdout.decode("utf-8").split('\n')[1:])
 
         expected_output = "\n".join([   
-            "Line 9: [WHITESPACE] Functions should be separated by reasonable whitespace.",
-            "Line 12: [COMMENTS] Functions should be preceded by explanatory comments.",
-            "Line 15: [WHITESPACE] Functions should be separated by reasonable whitespace.",
+            "Line 14: [WHITESPACE] Enums and Structs should be separated by reasonable whitespace.",
+            "Line 20: [WHITESPACE] Structs and Typedefs should be separated by reasonable whitespace.",
+            "Line 23: [WHITESPACE] Typedefs should be separated by reasonable whitespace.",
+            "Line 27: [WHITESPACE] Typedefs and Structs should be separated by reasonable whitespace.",
+            "Line 31: [COMMENTS] Functions should be preceded by explanatory comments.",
+            "Line 35: [WHITESPACE] Functions should be separated by reasonable whitespace.",
             ""
         ])
 

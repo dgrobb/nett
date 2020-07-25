@@ -18,6 +18,7 @@ struct BadBlah {
     int x;
     int y;
 };
+
 typedef struct BadBlah badBlah;
 
 typedef int bad_int;

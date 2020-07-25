@@ -4,30 +4,53 @@
 #ifndef LLVM_CLANG_TOOLS_EXTRA_NETT_FUNCTIONDEFINITIONMANAGER_HPP
 #define LLVM_CLANG_TOOLS_EXTRA_NETT_FUNCTIONDEFINITIONMANAGER_HPP
 
+#include "clang/ASTMatchers/ASTMatchFinder.h"
 #include <string>
 #include <map>
 #include <vector>
 
 namespace nett {
 
-// An method definition entry
-struct DefinitionEntry {
-    DefinitionEntry(std::string FuncName_, int StartLineNo_, int EndLineNo_) : 
-            FuncName(FuncName_), StartLineNo(StartLineNo_), EndLineNo(EndLineNo_){};
-            
-    std::string FuncName;
-    int StartLineNo;
-    int EndLineNo;
+// The type of entry
+enum EntryType {
+    ENTRY_FUNC_DECL,
+    ENTRY_ENUM_DECL,
+    ENTRY_STRUCT_DECL,
+    ENTRY_UNION_DECL,
+    ENTRY_FUNC_DEFN,
+    ENTRY_ENUM_DEFN,
+    ENTRY_STRUCT_DEFN,
+    ENTRY_UNION_DEFN,
+    ENTRY_GLOBAL,
+    ENTRY_TYPEDEF
 };
 
-// Keeps track of method definition locations
-class FunctionDefinitionManager {
-    public:
-    FunctionDefinitionManager() {}
+// Information used to construct a content entry
+struct EntryInfo {
+    std::string File;
+    int StartLineNo;
+    int EndLineNo;
+    EntryType Type;
+};
 
-    // Adds a new function definition mapping to the tracker
-    void AddDefinition(std::string File, std::string FuncName, 
-            int StartLineNo, int EndLineNo);
+// A file content entry
+struct DefinitionEntry {
+    DefinitionEntry(struct EntryInfo Info) : 
+            StartLineNo(Info.StartLineNo), EndLineNo(Info.EndLineNo), 
+            Type(Info.Type) {};
+            
+    int StartLineNo;
+    int EndLineNo;
+    EntryType Type;
+};
+
+// Keeps track of declarations/definitions within files
+class FileContentManager {
+    public:
+    FileContentManager() {}
+
+    // Adds a new entry into the tracker
+    void AddEntry(struct EntryInfo Info);
 
     // Generates a set of whitespace violations using the 
     // current mapping information.
@@ -37,7 +60,12 @@ class FunctionDefinitionManager {
     std::map<std::string, std::vector<DefinitionEntry>> MethodMap;
 };
 
-extern FunctionDefinitionManager GlobalFunctionDefinitionManager;
+// Constructs an entry for the given node.
+struct EntryInfo ConstructFileEntry(const clang::Decl* Node, 
+        clang::ASTContext* Context, EntryType Type, 
+        bool SemiColonTerminated=false);
+
+extern FileContentManager GlobalFileContentManager;
 
 }  // namespace nett
 

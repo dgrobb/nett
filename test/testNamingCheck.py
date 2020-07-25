@@ -132,9 +132,9 @@ class TestNamingChecks(unittest.TestCase):
         extracted_output = "\n".join(stdout.decode("utf-8").split('\n')[1:])
 
         expected_output = "\n".join([
-            "Line 21: [NAMING] 'badBlah' misnamed. Types should be NamedLikeThis.",
-            "Line 23: [NAMING] 'bad_int' misnamed. Types should be NamedLikeThis.",
-            "Line 27: [NAMING] 'Bad_Foo' misnamed. Types should be NamedLikeThis.",
+            "Line 22: [NAMING] 'badBlah' misnamed. Types should be NamedLikeThis.",
+            "Line 24: [NAMING] 'bad_int' misnamed. Types should be NamedLikeThis.",
+            "Line 28: [NAMING] 'Bad_Foo' misnamed. Types should be NamedLikeThis.",
             ""
         ])
 

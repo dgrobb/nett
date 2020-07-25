@@ -40,7 +40,7 @@ add_clang_executable(nett
     checks/whitespace/FunctionCallWhitespaceCheck.cpp
     checks/whitespace/VarDeclWhitespaceCheck.cpp
     checks/whitespace/TernaryOperatorWhitespaceCheck.cpp
-    checks/whitespace/FunctionDefinitionManager.cpp
+    checks/whitespace/FileContentManager.cpp
     checks/indentation/IndentCheck.cpp
     checks/indentation/GlobalVarIndentCheck.cpp
     checks/indentation/FuncDeclParamContIndentCheck.cpp

@@ -6,7 +6,7 @@
 #include "../../violations/ViolationManager.hpp"
 #include "../utils/Tokens.hpp"
 #include "../utils/Typedef.hpp"
-#include "../whitespace/FunctionDefinitionManager.hpp"
+#include "../whitespace/FileContentManager.hpp"
 #include "IndentCheck.hpp"
 
 #include "clang/AST/ParentMap.h"

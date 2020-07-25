@@ -48,7 +48,7 @@
 #include "checks/whitespace/UnaryOperatorWhitespaceCheck.hpp"
 #include "checks/whitespace/VarDeclWhitespaceCheck.hpp"
 #include "checks/whitespace/TernaryOperatorWhitespaceCheck.hpp"
-#include "checks/whitespace/FunctionDefinitionManager.hpp"
+#include "checks/whitespace/FileContentManager.hpp"
 #include "input/FileInput.hpp"
 #include "output/OutputColors.hpp"
 #include "output/UserOutput.hpp"

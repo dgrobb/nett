@@ -1,7 +1,7 @@
 /* Copyright (C) 2020  Matthys Grobbelaar
  *  Full license notice can be found in Nett.cpp
  */
-#include "FunctionDefinitionManager.hpp"
+#include "FileContentManager.hpp"
 #include "../../violations/ViolationManager.hpp"
 #include "../utils/Tokens.hpp"
 

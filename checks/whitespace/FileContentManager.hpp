@@ -1,8 +1,8 @@
 /* Copyright (C) 2020  Matthys Grobbelaar
  *  Full license notice can be found in Nett.cpp
  */
-#ifndef LLVM_CLANG_TOOLS_EXTRA_NETT_FUNCTIONDEFINITIONMANAGER_HPP
-#define LLVM_CLANG_TOOLS_EXTRA_NETT_FUNCTIONDEFINITIONMANAGER_HPP
+#ifndef LLVM_CLANG_TOOLS_EXTRA_NETT_FILECONTENTMANAGER_HPP
+#define LLVM_CLANG_TOOLS_EXTRA_NETT_FILECONTENTMANAGER_HPP
 
 #include "clang/ASTMatchers/ASTMatchFinder.h"
 #include <string>

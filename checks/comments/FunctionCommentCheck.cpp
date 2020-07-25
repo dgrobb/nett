@@ -3,7 +3,7 @@
  */
 #include "FunctionCommentCheck.hpp"
 #include "../utils/Tokens.hpp"
-#include "../whitespace/FunctionDefinitionManager.hpp"
+#include "../whitespace/FileContentManager.hpp"
 #include "CommentManager.hpp"
 
 #include <sstream>

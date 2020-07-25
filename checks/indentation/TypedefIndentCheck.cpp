@@ -3,7 +3,7 @@
  */
 #include "TypedefIndentCheck.hpp"
 
-#include "../whitespace/FunctionDefinitionManager.hpp"
+#include "../whitespace/FileContentManager.hpp"
 #include "../utils/Tokens.hpp"
 #include "IndentCheck.hpp"
 

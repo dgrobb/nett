@@ -26,7 +26,8 @@ struct EntryInfo ConstructFileEntry(const clang::Decl* Node,
     clang::SourceLocation EndLoc = Node->getEndLoc();
 
     if (SemiColonTerminated) {
-        EndLoc = checks::utils::FindCharLocation(Node->getEndLoc(), ';', SM, Context);
+        EndLoc = checks::utils::FindCharLocation(
+                Node->getEndLoc(), ';', SM, Context);
     }
     EndLine = SM.getExpansionLineNumber(EndLoc);
 
@@ -38,7 +39,8 @@ struct EntryInfo ConstructFileEntry(const clang::Decl* Node,
         }
     }
 
-    struct EntryInfo Result = {File.str(), StartLine, EndLine, Type, StartLoc, EndLoc, Context};
+    struct EntryInfo Result = {
+            File.str(), StartLine, EndLine, Type, StartLoc, EndLoc, Context};
     return Result;
 }
 
@@ -52,21 +54,24 @@ void FileContentManager::AddEntry(struct EntryInfo Info) {
     // We need to add all of the comments in the file as entries as
     // well so that they can be taken into account later.
     auto& SM = Info.Context->getSourceManager();
-    auto CommentList = Info.Context->Comments.getCommentsInFile(SM.getFileID(Info.StartLoc));
-    
+    auto CommentList = Info.Context->Comments.getCommentsInFile(
+            SM.getFileID(Info.StartLoc));
+
     if (CommentList) {
         std::map<unsigned int, clang::RawComment*>::const_iterator it;
 
         for (it = CommentList->begin(); it != CommentList->end(); it++) {
             struct EntryInfo CommentEntry;
             CommentEntry.File = Info.File;
-            CommentEntry.StartLineNo = SM.getExpansionLineNumber(it->second->getBeginLoc());
-            CommentEntry.EndLineNo = SM.getExpansionLineNumber(it->second->getEndLoc());
+            CommentEntry.StartLineNo =
+                    SM.getExpansionLineNumber(it->second->getBeginLoc());
+            CommentEntry.EndLineNo =
+                    SM.getExpansionLineNumber(it->second->getEndLoc());
             CommentEntry.Type = EntryType::ENTRY_COMMENT;
             CommentEntry.StartLoc = it->second->getBeginLoc();
             CommentEntry.EndLoc = it->second->getEndLoc();
             CommentEntry.Context = Info.Context;
-            MethodMap[Info.File].emplace_back(CommentEntry);  
+            MethodMap[Info.File].emplace_back(CommentEntry);
         }
     }
 }
@@ -128,7 +133,7 @@ void FileContentManager::GenerateWhitespaceViolations(void) {
             Filtered.push_back(Entries[curr]);
 
             unsigned offset = 1;
-            while (curr + offset < Entries.size() && 
+            while (curr + offset < Entries.size() &&
                     Entries[curr + offset].EndLoc < Entries[curr].EndLoc) {
                 // The entry at the offset is nested in the current entry
                 offset += 1;
@@ -142,7 +147,7 @@ void FileContentManager::GenerateWhitespaceViolations(void) {
         Filtered = std::vector<DefinitionEntry>();
         for (unsigned i = 0; i < Entries.size() - 1; i++) {
             if (Entries[i].Type == EntryType::ENTRY_COMMENT &&
-                Entries[i].StartLineNo == Entries[i + 1].StartLineNo) {
+                    Entries[i].StartLineNo == Entries[i + 1].StartLineNo) {
                 continue;
             }
             Filtered.push_back(Entries[i]);
@@ -161,12 +166,12 @@ void FileContentManager::GenerateWhitespaceViolations(void) {
             std::string E2Type = TypeNames[Entries[i].Type];
 
             if (Entries[i].StartLineNo == Entries[i - 1].StartLineNo &&
-                Entries[i].EndLineNo == Entries[i - 1].EndLineNo) {
+                    Entries[i].EndLineNo == Entries[i - 1].EndLineNo) {
                 // We have the same entry twice (which can happen)
                 continue;
             }
-            if (Entries[i - 1].Type == EntryType::ENTRY_COMMENT || 
-                Entries[i].Type == EntryType::ENTRY_COMMENT) {
+            if (Entries[i - 1].Type == EntryType::ENTRY_COMMENT ||
+                    Entries[i].Type == EntryType::ENTRY_COMMENT) {
                 // We ignore comments
                 continue;
             }

@@ -35,7 +35,8 @@ void FuncDeclParamContIndentChecker::run(
         // The start of the source range is the '(' token after the function
         // name The end of the source range is the ')' token after the final
         // parameter
-        auto ParamStartLoc = utils::FindCharLocation(Node->getLocation(), '(', SM, Result.Context);
+        auto ParamStartLoc = utils::FindCharLocation(
+                Node->getLocation(), '(', SM, Result.Context);
 
         auto ParamEndLoc = ParamStartLoc;
         if (Node->getNumParams() == 0) {

@@ -48,7 +48,7 @@ struct DefinitionEntry {
     int EndLineNo;
     EntryType Type;
     clang::SourceLocation StartLoc;
-    clang::SourceLocation EndLoc;  
+    clang::SourceLocation EndLoc;
 };
 
 // Keeps track of declarations/definitions within files

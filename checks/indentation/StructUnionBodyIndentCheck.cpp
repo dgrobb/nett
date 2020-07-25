@@ -116,7 +116,8 @@ void StructUnionBodyIndentChecker::run(const MatchFinder::MatchResult& Result) {
             }
         }
 
-        nett::EntryInfo Info = ConstructFileEntry(Node, Result.Context, Type, true);
+        nett::EntryInfo Info =
+                ConstructFileEntry(Node, Result.Context, Type, true);
         GlobalFileContentManager.AddEntry(Info);
     }
 }

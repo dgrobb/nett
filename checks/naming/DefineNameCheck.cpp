@@ -49,8 +49,8 @@ void DefineNameChecker::EndOfMainFile() {
                            << "' misnamed. #defines should be NAMED_LIKE_THIS.";
 
                     GlobalViolationManager.AddInfractedName(Name.str());
-                    GlobalViolationManager.AddViolation(
-                            new NamingViolation(File.str(), LineNo, ErrMsg.str()));
+                    GlobalViolationManager.AddViolation(new NamingViolation(
+                            File.str(), LineNo, ErrMsg.str()));
                 }
             }
         }

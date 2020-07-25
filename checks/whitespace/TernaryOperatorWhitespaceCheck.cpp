@@ -23,8 +23,8 @@ namespace whitespace {
 void TernaryOperatorWhitespaceChecker::run(
         const MatchFinder::MatchResult& Result) {
 
-    if (const auto* Node =
-                    Result.Nodes.getNodeAs<clang::ConditionalOperator>("ternaryExpr")) {
+    if (const auto* Node = Result.Nodes.getNodeAs<clang::ConditionalOperator>(
+                "ternaryExpr")) {
 
         auto& SM = *Result.SourceManager;
         auto LangOpts = Result.Context->getLangOpts();
@@ -32,27 +32,31 @@ void TernaryOperatorWhitespaceChecker::run(
         if (!SM.isWrittenInMainFile(Node->getBeginLoc())) {
             return;
         }
-       
+
         auto QuestionLoc = Node->getQuestionLoc();
         auto ColonLoc = Node->getColonLoc();
-        auto CondEndLoc = GetPreviousNonWhitespaceLoc(QuestionLoc.getLocWithOffset(-1), SM);
-        auto TrueBeginLoc = GetNextNonWhitespaceLoc(QuestionLoc.getLocWithOffset(1), SM);
-        auto TrueEndLoc = GetPreviousNonWhitespaceLoc(ColonLoc.getLocWithOffset(-1), SM);
-        auto FalseBeginLoc = GetNextNonWhitespaceLoc(ColonLoc.getLocWithOffset(1), SM);
+        auto CondEndLoc = GetPreviousNonWhitespaceLoc(
+                QuestionLoc.getLocWithOffset(-1), SM);
+        auto TrueBeginLoc =
+                GetNextNonWhitespaceLoc(QuestionLoc.getLocWithOffset(1), SM);
+        auto TrueEndLoc =
+                GetPreviousNonWhitespaceLoc(ColonLoc.getLocWithOffset(-1), SM);
+        auto FalseBeginLoc =
+                GetNextNonWhitespaceLoc(ColonLoc.getLocWithOffset(1), SM);
 
-        if (SM.getExpansionLineNumber(CondEndLoc) == 
+        if (SM.getExpansionLineNumber(CondEndLoc) ==
                 SM.getExpansionLineNumber(QuestionLoc)) {
             CheckLocationWhitespace(CondEndLoc, QuestionLoc, 1, SM, LangOpts);
         }
-        if (SM.getExpansionLineNumber(QuestionLoc) == 
+        if (SM.getExpansionLineNumber(QuestionLoc) ==
                 SM.getExpansionLineNumber(TrueBeginLoc)) {
             CheckLocationWhitespace(QuestionLoc, TrueBeginLoc, 1, SM, LangOpts);
         }
-        if (SM.getExpansionLineNumber(TrueEndLoc) == 
+        if (SM.getExpansionLineNumber(TrueEndLoc) ==
                 SM.getExpansionLineNumber(ColonLoc)) {
             CheckLocationWhitespace(TrueEndLoc, ColonLoc, 1, SM, LangOpts);
         }
-        if (SM.getExpansionLineNumber(ColonLoc) == 
+        if (SM.getExpansionLineNumber(ColonLoc) ==
                 SM.getExpansionLineNumber(FalseBeginLoc)) {
             CheckLocationWhitespace(ColonLoc, FalseBeginLoc, 1, SM, LangOpts);
         }

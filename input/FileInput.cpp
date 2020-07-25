@@ -28,9 +28,9 @@ static void SanitizeFileContent(std::string& Content) {
 }
 
 // Checks the line lengths of the content in the given file.
-static void CheckLineLengths(const std::string FilePath, 
-        const std::string Content) {
-    
+static void CheckLineLengths(
+        const std::string FilePath, const std::string Content) {
+
     std::istringstream ContentStream(Content);
     std::string Line;
     int LineNo = 1;
@@ -64,10 +64,9 @@ static int SubstringLineNumber(char* Substring, const char* Content) {
 }
 
 // Checks if the given substring is inside a single line comment (//)
-// within the given file content. Returns true if it is, 
+// within the given file content. Returns true if it is,
 // else returns false.
-static bool SubstringInSingleLineComment(char* Substring,
-        const char* Content) {
+static bool SubstringInSingleLineComment(char* Substring, const char* Content) {
 
     // First, we need to get the start and end of the current line
     // of Content in which Substring occurs.
@@ -92,12 +91,11 @@ static bool SubstringInSingleLineComment(char* Substring,
     return Substring >= Comment;
 }
 
-// Checks if the given substring is inside a multi-line 
-// comment (/* ... */) within the given file content. 
+// Checks if the given substring is inside a multi-line
+// comment (/* ... */) within the given file content.
 // Returns true if it is, else returns false.
-static bool SubstringInMultiLineComment(char* Substring,
-        const char* Content) {
-    
+static bool SubstringInMultiLineComment(char* Substring, const char* Content) {
+
     // First, we need to get the first occurrence of
     // the end of a multi-line comment (*/) after the
     // substring
@@ -107,7 +105,7 @@ static bool SubstringInMultiLineComment(char* Substring,
             return false;
         }
         CommentEnd++;
-    } 
+    }
 
     // Here, we've found the end of a multi-line comment.
     // Now we find its sibling /**/
@@ -126,13 +124,12 @@ static bool SubstringInMultiLineComment(char* Substring,
     return CommentStart <= Substring && Substring <= CommentEnd;
 }
 
-// Checks if the given substring is inside double quotes ("") 
+// Checks if the given substring is inside double quotes ("")
 // Returns true if it is, else returns false.
-static bool SubstringInDoubleQuotes(char* Substring,
-        const char* Content) {
-    
+static bool SubstringInDoubleQuotes(char* Substring, const char* Content) {
+
     // We know that a substring is within double quotes
-    // if there is an odd number of double quotes 
+    // if there is an odd number of double quotes
     // preceding it in the file.
     int QuoteCount = 0;
     auto StartLoc = Substring;
@@ -143,13 +140,13 @@ static bool SubstringInDoubleQuotes(char* Substring,
         }
         StartLoc--;
     }
-    
+
     return QuoteCount % 2 == 1;
 }
 
 // Checks the given file content for digraphs and trigraphs.
-static void CheckDigraphsAndTrigraphs(const std::string FilePath, 
-        const std::string Content) {
+static void CheckDigraphsAndTrigraphs(
+        const std::string FilePath, const std::string Content) {
 
     // We need to find the locations of each of the di/trigraphs
     // within the file content. For each *-graph, we need to
@@ -159,17 +156,17 @@ static void CheckDigraphsAndTrigraphs(const std::string FilePath,
     char* String = new char[Content.length() + 1];
     std::strcpy(String, Content.c_str());
     std::vector<char*> NGraphsFound;
-    
+
     for (const auto* Digraph : C_DIGRAPHS) {
         char* CurrentLocation = String;
         char* DigraphLoc;
 
         while ((DigraphLoc = strstr(CurrentLocation, Digraph))) {
-            bool ShouldIgnore = 
+            bool ShouldIgnore =
                     SubstringInSingleLineComment(DigraphLoc, String) ||
                     SubstringInMultiLineComment(DigraphLoc, String) ||
                     SubstringInDoubleQuotes(DigraphLoc, String);
-            
+
             if (!ShouldIgnore) {
                 NGraphsFound.push_back(DigraphLoc);
             }
@@ -182,18 +179,18 @@ static void CheckDigraphsAndTrigraphs(const std::string FilePath,
         char* TrigraphLoc;
 
         while ((TrigraphLoc = strstr(CurrentLocation, Trigraph))) {
-            bool ShouldIgnore = 
+            bool ShouldIgnore =
                     SubstringInSingleLineComment(TrigraphLoc, String) ||
                     SubstringInMultiLineComment(TrigraphLoc, String) ||
                     SubstringInDoubleQuotes(TrigraphLoc, String);
-            
+
             if (!ShouldIgnore) {
                 NGraphsFound.push_back(TrigraphLoc);
             }
             CurrentLocation = TrigraphLoc + 1;
         }
     }
-    
+
     for (auto NGraph : NGraphsFound) {
         std::stringstream ErrMsg;
         ErrMsg << "Digraphs and Trigraphs should not be used.";

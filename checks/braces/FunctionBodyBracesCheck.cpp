@@ -71,8 +71,8 @@ class FunctionASTVisitor
                     ErrMsg << "Closing braces should look like: } else";
 
                     auto LineNo = SM.getExpansionLineNumber(RBraceLoc);
-                    GlobalViolationManager.AddViolation(
-                            new BracesViolation(File.str(), LineNo, ErrMsg.str()));
+                    GlobalViolationManager.AddViolation(new BracesViolation(
+                            File.str(), LineNo, ErrMsg.str()));
                 }
             }
             if (!llvm::isa<clang::IfStmt>(Stmt->getElse())) {

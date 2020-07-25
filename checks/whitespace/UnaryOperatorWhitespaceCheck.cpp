@@ -69,8 +69,8 @@ void UnaryOperatorWhitespaceChecker::run(
             } else {
                 ErrMsg << OpString << "X";
             }
-            GlobalViolationManager.AddViolation(
-                    new WhitespaceViolation(File.str(), OpLineNo, ErrMsg.str()));
+            GlobalViolationManager.AddViolation(new WhitespaceViolation(
+                    File.str(), OpLineNo, ErrMsg.str()));
         } else {
             if (Node->isPostfix()) {  // postfix: x++
                 CheckLocationWhitespace(ExprLoc, OpLoc, 0, SM, LangOpts);

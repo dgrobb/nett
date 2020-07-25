@@ -4,6 +4,7 @@
 #include "NamingStyles.hpp"
 
 #include "../../input/FileUtils.hpp"
+
 #include "llvm/Support/Regex.h"
 
 namespace nett {

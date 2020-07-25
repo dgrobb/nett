@@ -3,8 +3,8 @@
  */
 #include "TypedefIndentCheck.hpp"
 
-#include "../whitespace/FileContentManager.hpp"
 #include "../utils/Tokens.hpp"
+#include "../whitespace/FileContentManager.hpp"
 #include "IndentCheck.hpp"
 
 using namespace clang::ast_matchers;
@@ -29,13 +29,14 @@ void TypedefIndentChecker::run(const MatchFinder::MatchResult& Result) {
         bool IsStructEnumDefinition = false;
         if (Node->getUnderlyingType()->isEnumeralType() ||
                 Node->getUnderlyingType()->isRecordType()) {
-            
+
             const auto* Type = Node->getUnderlyingType().getTypePtrOrNull();
             if (Type) {
                 auto* TagDecl = Type->getAsTagDecl();
                 auto NodeLine = SM.getExpansionLineNumber(Node->getBeginLoc());
-                auto TagLine = SM.getExpansionLineNumber(TagDecl->getBeginLoc());
-                
+                auto TagLine =
+                        SM.getExpansionLineNumber(TagDecl->getBeginLoc());
+
                 if (NodeLine == TagLine) {
                     IsStructEnumDefinition = true;
                 }
@@ -45,8 +46,8 @@ void TypedefIndentChecker::run(const MatchFinder::MatchResult& Result) {
         if (!IsStructEnumDefinition) {
             // We only add entries for typedefs which are unrelated to
             // structs and enums since those entries are added elsewhere
-            nett::EntryInfo Info = ConstructFileEntry(Node, 
-                    Result.Context, nett::EntryType::ENTRY_TYPEDEF, true);
+            nett::EntryInfo Info = ConstructFileEntry(
+                    Node, Result.Context, nett::EntryType::ENTRY_TYPEDEF, true);
             GlobalFileContentManager.AddEntry(Info);
         }
     }

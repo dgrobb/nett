@@ -47,7 +47,8 @@ void FunctionCallWhitespaceChecker::run(
             std::stringstream ErrMsg;
             ErrMsg << "Function calls should look like: func_call(...";
             GlobalViolationManager.AddViolation(new WhitespaceViolation(
-                    File.str(), SM.getExpansionLineNumber(NameEndLoc), ErrMsg.str()));
+                    File.str(), SM.getExpansionLineNumber(NameEndLoc),
+                    ErrMsg.str()));
         } else {
             CheckLocationWhitespace(NameEndLoc, LParenLoc, 0, SM, LangOpts);
         }

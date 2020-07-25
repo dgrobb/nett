@@ -2,6 +2,7 @@
  *  Full license notice can be found in Nett.cpp
  */
 #include "FunctionCommentCheck.hpp"
+
 #include "../utils/Tokens.hpp"
 #include "../whitespace/FileContentManager.hpp"
 #include "CommentManager.hpp"
@@ -53,7 +54,8 @@ void FunctionCommentChecker::run(const MatchFinder::MatchResult& Result) {
                     FuncName.str(), File.str(), FuncLineNo);
         }
         if (HasComment) {
-            GlobalFunctionCommentManager.MarkDeclNameAsCommented(FuncName.str());
+            GlobalFunctionCommentManager.MarkDeclNameAsCommented(
+                    FuncName.str());
         }
 
         // Finally, we log the declaration/definition

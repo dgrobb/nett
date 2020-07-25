@@ -167,8 +167,9 @@ void StructUnionWhitespaceChecker::run(const MatchFinder::MatchResult& Result) {
             std::stringstream ErrMsg;
             ErrMsg << "Semicolons should be on the same line as the end of a "
                       "declaration.";
-            GlobalViolationManager.AddViolation(new WhitespaceViolation(
-                    File.str(), SM.getExpansionLineNumber(SemiLoc), ErrMsg.str()));
+            GlobalViolationManager.AddViolation(
+                    new WhitespaceViolation(File.str(),
+                            SM.getExpansionLineNumber(SemiLoc), ErrMsg.str()));
         } else {
             CheckLocationWhitespace(EndLoc, SemiLoc, 0, SM, LangOpts);
         }

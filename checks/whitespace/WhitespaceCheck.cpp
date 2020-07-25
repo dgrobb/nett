@@ -114,8 +114,8 @@ void CheckParenWhitespace(clang::SourceLocation LParenLoc,
     if (SM.getSpellingLineNumber(CurrentLoc) != RParenLineNo) {
         std::stringstream ErrMsg;
         ErrMsg << "Closing parentheses should look like: ...X)";
-        GlobalViolationManager.AddViolation(
-                new WhitespaceViolation(File.str(), RParenLineNo, ErrMsg.str()));
+        GlobalViolationManager.AddViolation(new WhitespaceViolation(
+                File.str(), RParenLineNo, ErrMsg.str()));
     } else {
         if (LParenLoc != CurrentLoc) {
             CheckLocationWhitespace(CurrentLoc, RParenLoc, 0, SM, LangOpts);
@@ -207,10 +207,10 @@ void CheckPointerAlignment(clang::SourceLocation PtrLoc,
 // If so, it is not a pointer, but a multiplication sign. So we return true.
 // Otherwise, if no brackets are found within the given min and
 // max source locations, returns false.
-bool PointerInBrackets(llvm::Optional<clang::Token> Token, 
+bool PointerInBrackets(llvm::Optional<clang::Token> Token,
         clang::SourceManager& SM, clang::LangOptions LangOpts,
         clang::SourceLocation RangeMinLoc, clang::SourceLocation RangeMaxLoc) {
-    
+
     auto PointerLoc = SM.getFileLoc(Token->getLocation());
     auto LHS = PointerLoc.getLocWithOffset(-1);
     auto RHS = PointerLoc.getLocWithOffset(1);
@@ -225,15 +225,15 @@ bool PointerInBrackets(llvm::Optional<clang::Token> Token,
         }
         LHS = LHS.getLocWithOffset(-1);
     }
-    
+
     while (RHS <= RangeMaxLoc) {
         if (*SM.getCharacterData(RHS) == ']') {
             FoundClosingBracket = true;
             break;
-        } 
+        }
         RHS = RHS.getLocWithOffset(1);
     }
-   
+
     return FoundOpeningBracket && FoundClosingBracket;
 }
 
@@ -256,7 +256,8 @@ void CheckPointerSpacing(llvm::Optional<clang::Token> CurrentToken,
             std::stringstream ErrMsg;
             ErrMsg << "Pointers should not be split across lines.";
             GlobalViolationManager.AddViolation(new WhitespaceViolation(
-                    File.str(), SM.getExpansionLineNumber(LeftPtrLoc), ErrMsg.str()));
+                    File.str(), SM.getExpansionLineNumber(LeftPtrLoc),
+                    ErrMsg.str()));
         } else {
             CheckLocationWhitespace(LeftPtrLoc, RightPtrLoc, 0, SM, LangOpts);
         }
@@ -265,8 +266,8 @@ void CheckPointerSpacing(llvm::Optional<clang::Token> CurrentToken,
         // We have a pointer followed by another token. (e.g. *x)
 
         // Check whether the next token is valid for a pointer
-        if (PointerInBrackets(CurrentToken, SM, LangOpts, 
-                RangeMinLoc, RangeMaxLoc)) {
+        if (PointerInBrackets(
+                    CurrentToken, SM, LangOpts, RangeMinLoc, RangeMaxLoc)) {
             return;
         }
 
@@ -277,8 +278,9 @@ void CheckPointerSpacing(llvm::Optional<clang::Token> CurrentToken,
                 SM.getExpansionLineNumber(TokenLoc)) {
             std::stringstream ErrMsg;
             ErrMsg << "Pointers should look like this: *X";
-            GlobalViolationManager.AddViolation(new WhitespaceViolation(
-                    File.str(), SM.getExpansionLineNumber(PtrLoc), ErrMsg.str()));
+            GlobalViolationManager.AddViolation(
+                    new WhitespaceViolation(File.str(),
+                            SM.getExpansionLineNumber(PtrLoc), ErrMsg.str()));
             return;
         }
 
@@ -363,22 +365,24 @@ void CheckPointerSpacing(llvm::Optional<clang::Token> CurrentToken,
             // We have too little space.
             std::stringstream ErrMsg;
             ErrMsg << "Pointers should be a* b or a *b, not a*b.";
-            GlobalViolationManager.AddViolation(new WhitespaceViolation(
-                    File.str(), SM.getExpansionLineNumber(PtrLoc), ErrMsg.str()));
+            GlobalViolationManager.AddViolation(
+                    new WhitespaceViolation(File.str(),
+                            SM.getExpansionLineNumber(PtrLoc), ErrMsg.str()));
         } else if (PrevToPtrSpaceCount != 0 && PtrToNextSpaceCount != 0) {
             // We have: token * token (too much space)
             std::stringstream ErrMsg;
             ErrMsg << "Pointers should be a* b or a *b, not a * b.";
-            GlobalViolationManager.AddViolation(new WhitespaceViolation(
-                    File.str(), SM.getExpansionLineNumber(PtrLoc), ErrMsg.str()));
+            GlobalViolationManager.AddViolation(
+                    new WhitespaceViolation(File.str(),
+                            SM.getExpansionLineNumber(PtrLoc), ErrMsg.str()));
         }
     }
     if (CurrentTokenData != '*' && NextTokenData == '*') {
         // We have a token followed by a pointer. (e.g. int*)
 
         // Check whether the current token is valid for a pointer
-        if (PointerInBrackets(NextToken, SM, LangOpts, 
-                RangeMinLoc, RangeMaxLoc)) {
+        if (PointerInBrackets(
+                    NextToken, SM, LangOpts, RangeMinLoc, RangeMaxLoc)) {
             return;
         }
 
@@ -391,8 +395,9 @@ void CheckPointerSpacing(llvm::Optional<clang::Token> CurrentToken,
                 SM.getExpansionLineNumber(TokenLoc)) {
             std::stringstream ErrMsg;
             ErrMsg << "Pointers should look like this: X*";
-            GlobalViolationManager.AddViolation(new WhitespaceViolation(
-                    File.str(), SM.getExpansionLineNumber(PtrLoc), ErrMsg.str()));
+            GlobalViolationManager.AddViolation(
+                    new WhitespaceViolation(File.str(),
+                            SM.getExpansionLineNumber(PtrLoc), ErrMsg.str()));
             return;
         }
 
@@ -457,14 +462,16 @@ void CheckPointerSpacing(llvm::Optional<clang::Token> CurrentToken,
             // Otherwise we have too little space
             std::stringstream ErrMsg;
             ErrMsg << "Pointers should be a* b or a *b, not a*b.";
-            GlobalViolationManager.AddViolation(new WhitespaceViolation(
-                    File.str(), SM.getExpansionLineNumber(PtrLoc), ErrMsg.str()));
+            GlobalViolationManager.AddViolation(
+                    new WhitespaceViolation(File.str(),
+                            SM.getExpansionLineNumber(PtrLoc), ErrMsg.str()));
         } else if (PrevToPtrSpaceCount != 0 && PtrToNextSpaceCount != 0) {
             // We have: token * nextToken (too much space)
             std::stringstream ErrMsg;
             ErrMsg << "Pointers should be a* b or a *b, not a * b.";
-            GlobalViolationManager.AddViolation(new WhitespaceViolation(
-                    File.str(), SM.getExpansionLineNumber(PtrLoc), ErrMsg.str()));
+            GlobalViolationManager.AddViolation(
+                    new WhitespaceViolation(File.str(),
+                            SM.getExpansionLineNumber(PtrLoc), ErrMsg.str()));
         }
     }
 }
@@ -486,8 +493,9 @@ void CheckSquareBracketSpacing(llvm::Optional<clang::Token> CurrentToken,
                 SM.getExpansionLineNumber(RightBracketLoc)) {
             std::stringstream ErrMsg;
             ErrMsg << "Empty brackets should look like: []";
-            GlobalViolationManager.AddViolation(new WhitespaceViolation(File.str(),
-                    SM.getExpansionLineNumber(LeftBracketLoc), ErrMsg.str()));
+            GlobalViolationManager.AddViolation(new WhitespaceViolation(
+                    File.str(), SM.getExpansionLineNumber(LeftBracketLoc),
+                    ErrMsg.str()));
         } else {
             CheckLocationWhitespace(
                     LeftBracketLoc, RightBracketLoc, 0, SM, LangOpts);
@@ -502,8 +510,9 @@ void CheckSquareBracketSpacing(llvm::Optional<clang::Token> CurrentToken,
                 SM.getExpansionLineNumber(TokenLoc)) {
             std::stringstream ErrMsg;
             ErrMsg << "Opening brackets should look like: [X...";
-            GlobalViolationManager.AddViolation(new WhitespaceViolation(File.str(),
-                    SM.getExpansionLineNumber(LeftBracketLoc), ErrMsg.str()));
+            GlobalViolationManager.AddViolation(new WhitespaceViolation(
+                    File.str(), SM.getExpansionLineNumber(LeftBracketLoc),
+                    ErrMsg.str()));
         } else {
             CheckLocationWhitespace(LeftBracketLoc, TokenLoc, 0, SM, LangOpts);
         }
@@ -518,8 +527,9 @@ void CheckSquareBracketSpacing(llvm::Optional<clang::Token> CurrentToken,
                 SM.getExpansionLineNumber(RightBracketLoc)) {
             std::stringstream ErrMsg;
             ErrMsg << "Closing brackets should look like: ...X]";
-            GlobalViolationManager.AddViolation(new WhitespaceViolation(File.str(),
-                    SM.getExpansionLineNumber(RightBracketLoc), ErrMsg.str()));
+            GlobalViolationManager.AddViolation(new WhitespaceViolation(
+                    File.str(), SM.getExpansionLineNumber(RightBracketLoc),
+                    ErrMsg.str()));
         } else {
             CheckLocationWhitespace(TokenLoc, RightBracketLoc, 0, SM, LangOpts);
         }
@@ -535,8 +545,9 @@ void CheckSquareBracketSpacing(llvm::Optional<clang::Token> CurrentToken,
                 SM.getExpansionLineNumber(LeftBracketLoc)) {
             std::stringstream ErrMsg;
             ErrMsg << "Opening brackets should look like: ...X[";
-            GlobalViolationManager.AddViolation(new WhitespaceViolation(File.str(),
-                    SM.getExpansionLineNumber(LeftBracketLoc), ErrMsg.str()));
+            GlobalViolationManager.AddViolation(new WhitespaceViolation(
+                    File.str(), SM.getExpansionLineNumber(LeftBracketLoc),
+                    ErrMsg.str()));
         } else {
             CheckLocationWhitespace(TokenLoc, LeftBracketLoc, 0, SM, LangOpts);
         }
@@ -571,8 +582,9 @@ void CheckParenthesisSpacing(llvm::Optional<clang::Token> CurrentToken,
                 SM.getExpansionLineNumber(ParenLoc)) {
             std::stringstream ErrMsg;
             ErrMsg << "Closing parentheses should look like: ...X)";
-            GlobalViolationManager.AddViolation(new WhitespaceViolation(
-                    File.str(), SM.getExpansionLineNumber(ParenLoc), ErrMsg.str()));
+            GlobalViolationManager.AddViolation(
+                    new WhitespaceViolation(File.str(),
+                            SM.getExpansionLineNumber(ParenLoc), ErrMsg.str()));
         } else {
             CheckLocationWhitespace(TokenLoc, ParenLoc, 0, SM, LangOpts);
         }
@@ -588,7 +600,8 @@ void CheckParenthesisSpacing(llvm::Optional<clang::Token> CurrentToken,
             std::stringstream ErrMsg;
             ErrMsg << "Function pointer parentheses should look like: ...)(...";
             GlobalViolationManager.AddViolation(new WhitespaceViolation(
-                    File.str(), SM.getExpansionLineNumber(LParenLoc), ErrMsg.str()));
+                    File.str(), SM.getExpansionLineNumber(LParenLoc),
+                    ErrMsg.str()));
         } else {
             CheckLocationWhitespace(RParenLoc, LParenLoc, 0, SM, LangOpts);
         }
@@ -612,8 +625,9 @@ void CheckCurlyBraceSpacing(llvm::Optional<clang::Token> CurrentToken,
                 SM.getExpansionLineNumber(RightBracketLoc)) {
             std::stringstream ErrMsg;
             ErrMsg << "Empty curly braces should look like: {}";
-            GlobalViolationManager.AddViolation(new WhitespaceViolation(File.str(),
-                    SM.getExpansionLineNumber(LeftBracketLoc), ErrMsg.str()));
+            GlobalViolationManager.AddViolation(new WhitespaceViolation(
+                    File.str(), SM.getExpansionLineNumber(LeftBracketLoc),
+                    ErrMsg.str()));
         } else {
             CheckLocationWhitespace(
                     LeftBracketLoc, RightBracketLoc, 0, SM, LangOpts);
@@ -652,8 +666,9 @@ void CheckCurlyBraceSpacing(llvm::Optional<clang::Token> CurrentToken,
                 SM.getExpansionLineNumber(LeftBracketLoc)) {
             std::stringstream ErrMsg;
             ErrMsg << "Opening braces should look like: ...X {";
-            GlobalViolationManager.AddViolation(new WhitespaceViolation(File.str(),
-                    SM.getExpansionLineNumber(LeftBracketLoc), ErrMsg.str()));
+            GlobalViolationManager.AddViolation(new WhitespaceViolation(
+                    File.str(), SM.getExpansionLineNumber(LeftBracketLoc),
+                    ErrMsg.str()));
         } else {
             CheckLocationWhitespace(TokenLoc, LeftBracketLoc, 1, SM, LangOpts);
         }
@@ -689,8 +704,9 @@ void CheckCommaSpacing(llvm::Optional<clang::Token> CurrentToken,
                 SM.getExpansionLineNumber(TokenLoc)) {
             std::stringstream ErrMsg;
             ErrMsg << "Commas should look like: X,";
-            GlobalViolationManager.AddViolation(new WhitespaceViolation(
-                    File.str(), SM.getExpansionLineNumber(CommaLoc), ErrMsg.str()));
+            GlobalViolationManager.AddViolation(
+                    new WhitespaceViolation(File.str(),
+                            SM.getExpansionLineNumber(CommaLoc), ErrMsg.str()));
         } else {
             CheckLocationWhitespace(TokenLoc, CommaLoc, 0, SM, LangOpts);
         }
@@ -736,13 +752,13 @@ void CheckGeneralSpacing(llvm::Optional<clang::Token> CurrentToken,
 void CheckSourceRangeWhitespaceTokens(clang::SourceLocation StartLoc,
         clang::SourceLocation EndLoc, clang::SourceManager& SM,
         clang::LangOptions LangOpts) {
-    
+
     clang::Token CurrentToken;
     clang::Token NextToken;
 
     StartLoc = GetNextNonWhitespaceLoc(StartLoc, SM);
     clang::Lexer::getRawToken(StartLoc, CurrentToken, SM, LangOpts);
-    
+
     do {
         auto CurrEndLoc = CurrentToken.getEndLoc();
         auto NextStartLoc = GetNextNonWhitespaceLoc(CurrEndLoc, SM);
@@ -750,12 +766,12 @@ void CheckSourceRangeWhitespaceTokens(clang::SourceLocation StartLoc,
 
         if (NextToken.getLocation() > EndLoc ||
                 CurrentToken.getLocation() == NextToken.getLocation()) {
-             break;
+            break;
         }
 
         auto CurrTok = llvm::Optional<clang::Token>(CurrentToken);
         auto NextTok = llvm::Optional<clang::Token>(NextToken);
-        
+
         CheckPointerSpacing(CurrTok, NextTok, SM, LangOpts, StartLoc, EndLoc);
         CheckSquareBracketSpacing(CurrTok, NextTok, SM, LangOpts);
         CheckParenthesisSpacing(CurrTok, NextTok, SM, LangOpts);
@@ -769,13 +785,13 @@ void CheckSourceRangeWhitespaceTokens(clang::SourceLocation StartLoc,
 void CheckSourceRangeWhitespaceTokensNoPointers(clang::SourceLocation StartLoc,
         clang::SourceLocation EndLoc, clang::SourceManager& SM,
         clang::LangOptions LangOpts) {
-    
+
     clang::Token CurrentToken;
     clang::Token NextToken;
 
     StartLoc = GetNextNonWhitespaceLoc(StartLoc, SM);
     clang::Lexer::getRawToken(StartLoc, CurrentToken, SM, LangOpts);
-    
+
     do {
         auto CurrEndLoc = CurrentToken.getEndLoc();
         auto NextStartLoc = GetNextNonWhitespaceLoc(CurrEndLoc, SM);
@@ -783,12 +799,12 @@ void CheckSourceRangeWhitespaceTokensNoPointers(clang::SourceLocation StartLoc,
 
         if (NextToken.getLocation() > EndLoc ||
                 CurrentToken.getLocation() == NextToken.getLocation()) {
-             break;
+            break;
         }
 
         auto CurrTok = llvm::Optional<clang::Token>(CurrentToken);
         auto NextTok = llvm::Optional<clang::Token>(NextToken);
-        
+
         CheckSquareBracketSpacing(CurrTok, NextTok, SM, LangOpts);
         CheckParenthesisSpacing(CurrTok, NextTok, SM, LangOpts);
         CheckCommaSpacing(CurrTok, NextTok, SM, LangOpts);

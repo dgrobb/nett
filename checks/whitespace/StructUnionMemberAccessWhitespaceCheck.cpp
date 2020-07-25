@@ -46,16 +46,16 @@ void StructUnionMemberAccessWhitespaceChecker::run(
         if (LHSLineNo != OpLineNo) {
             std::stringstream ErrMsg;
             ErrMsg << "Member accesses should look like: X" << OpString << "a";
-            GlobalViolationManager.AddViolation(
-                    new WhitespaceViolation(File.str(), OpLineNo, ErrMsg.str()));
+            GlobalViolationManager.AddViolation(new WhitespaceViolation(
+                    File.str(), OpLineNo, ErrMsg.str()));
         } else {
             // There should be no spaces to the left
-            CheckLocationWhitespace(LHSLoc, OpLoc, 0, SM, LangOpts);   
+            CheckLocationWhitespace(LHSLoc, OpLoc, 0, SM, LangOpts);
         }
         if (OpLineNo == RHSLineNo) {
             // There should be no spaces to the right
             CheckLocationWhitespace(OpEndLoc, RHSLoc, 0, SM, LangOpts);
-        } 
+        }
     }
 }
 

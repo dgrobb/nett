@@ -69,8 +69,9 @@ void CheckSourceRangeContinuationIndent(clang::SourceLocation StartLoc,
 
     while (Offset != llvm::StringRef::npos) {
         auto NextLineLocation = StartLoc.getLocWithOffset(Offset + 1);
-        auto NextTokenLoc = checks::whitespace::GetNextNonWhitespaceLoc(NextLineLocation, SM);
-        
+        auto NextTokenLoc = checks::whitespace::GetNextNonWhitespaceLoc(
+                NextLineLocation, SM);
+
         if (SM.getExpansionLineNumber(NextTokenLoc) !=
                 SM.getExpansionLineNumber(NextLineLocation)) {
             // The current line is empty

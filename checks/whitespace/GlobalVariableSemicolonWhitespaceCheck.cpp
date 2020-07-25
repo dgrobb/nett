@@ -55,8 +55,8 @@ void GlobalVariableSemicolonWhitespaceChecker::run(
             std::stringstream ErrMsg;
             ErrMsg << "Semicolons should be on the same line as the end of a "
                       "declaration.";
-            GlobalViolationManager.AddViolation(
-                    new WhitespaceViolation(File.str(), ColonLineNo, ErrMsg.str()));
+            GlobalViolationManager.AddViolation(new WhitespaceViolation(
+                    File.str(), ColonLineNo, ErrMsg.str()));
         } else {
             CheckLocationWhitespace(PrevLoc, ColonLoc, 0, SM, LangOpts);
         }

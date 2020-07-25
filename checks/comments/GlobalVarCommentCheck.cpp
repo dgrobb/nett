@@ -4,8 +4,8 @@
 #include "GlobalVarCommentCheck.hpp"
 
 #include "../../violations/ViolationManager.hpp"
-#include "../whitespace/FileContentManager.hpp"
 #include "../utils/Tokens.hpp"
+#include "../whitespace/FileContentManager.hpp"
 
 #include <sstream>
 

@@ -25,7 +25,7 @@ void FuncDeclParamContIndentChecker::run(
     if (const auto* Node =
                     Result.Nodes.getNodeAs<clang::FunctionDecl>("funcDecl")) {
 
-        const auto& SM = *Result.SourceManager;
+        auto& SM = *Result.SourceManager;
         auto LangOpts = Result.Context->getLangOpts();
 
         if (!SM.isInMainFile(Node->getLocation())) {
@@ -35,14 +35,7 @@ void FuncDeclParamContIndentChecker::run(
         // The start of the source range is the '(' token after the function
         // name The end of the source range is the ')' token after the final
         // parameter
-        auto ParamStartLoc = Node->getLocation();
-        auto NextToken = clang::Token();
-        while (NextToken.getKind() != clang::tok::l_paren) {
-            ParamStartLoc = ParamStartLoc.getLocWithOffset(1);
-            NextToken = clang::Lexer::findNextToken(ParamStartLoc, SM, LangOpts)
-                                .getValue();
-        }
-        ParamStartLoc = NextToken.getLocation();
+        auto ParamStartLoc = utils::FindCharLocation(Node->getLocation(), '(', SM, Result.Context);
 
         auto ParamEndLoc = ParamStartLoc;
         if (Node->getNumParams() == 0) {

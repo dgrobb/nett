@@ -523,6 +523,10 @@ void FunctionBodyWhitespaceChecker::run(
         }
         CheckParenWhitespace(LParenLoc, RParenLoc, SM, LangOpts);
 
+        // Next we check the whitespace throughout the declaration from the
+        // return type through to the right parenthesis
+        CheckSourceRangeWhitespaceTokens(Node->getBeginLoc(), RParenLoc, SM, LangOpts);
+
         // Finally, we check the spacing around commas in parameters
         CheckSourceRangeCommaWhitespace(LParenLoc, RParenLoc, SM, LangOpts);
     }

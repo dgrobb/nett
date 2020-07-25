@@ -23,7 +23,8 @@ enum EntryType {
     ENTRY_STRUCT_DEFN,
     ENTRY_UNION_DEFN,
     ENTRY_GLOBAL,
-    ENTRY_TYPEDEF
+    ENTRY_TYPEDEF,
+    ENTRY_COMMENT
 };
 
 // Information used to construct a content entry
@@ -32,17 +33,22 @@ struct EntryInfo {
     int StartLineNo;
     int EndLineNo;
     EntryType Type;
+    clang::SourceLocation StartLoc;
+    clang::SourceLocation EndLoc;
+    clang::ASTContext* Context;
 };
 
 // A file content entry
 struct DefinitionEntry {
     DefinitionEntry(struct EntryInfo Info)
         : StartLineNo(Info.StartLineNo), EndLineNo(Info.EndLineNo),
-          Type(Info.Type){};
+          Type(Info.Type), StartLoc(Info.StartLoc), EndLoc(Info.EndLoc){};
 
     int StartLineNo;
     int EndLineNo;
     EntryType Type;
+    clang::SourceLocation StartLoc;
+    clang::SourceLocation EndLoc;  
 };
 
 // Keeps track of declarations/definitions within files

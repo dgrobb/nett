@@ -288,7 +288,8 @@ std::vector<std::string> AppendDefaultFlagsToArgv(int Argc, const char** Argv) {
 
     std::vector<std::string> NewArgv;
     std::vector<std::string> DefaultFlags{"--extra-arg=-fparse-all-comments",
-            "--extra-arg=-std=gnu99", "--extra-arg=-trigraphs", "--"};
+            "--extra-arg=-std=gnu99", "--extra-arg=-trigraphs", 
+            "--extra-arg=-O0", "--"};
 
     // We take the command line arguments as is
     for (int i = 0; i < Argc; i++) {

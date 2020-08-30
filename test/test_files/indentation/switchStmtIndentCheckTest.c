@@ -2,7 +2,7 @@
 int good_switch_example(int argc, int x) {
     
     switch (argc) {
-        case 1:
+        case -1:
         case 2: {
             x++;
             return x;

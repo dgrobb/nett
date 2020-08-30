@@ -702,6 +702,21 @@ static void CheckStandardStatementIndentation(clang::Stmt* Stmt,
         }
     } else if (ParentNodes[0].get<clang::CaseStmt>() ||
                ParentNodes[0].get<clang::DefaultStmt>()) {
+        
+        if (llvm::isa<clang::UnaryOperator>(Stmt)) { 
+            // We need to check for unary operators in case statements
+            // since they are incorrectly picked up in indent checks
+            //& SM = Context->getSourceManager();
+            auto CaseStmt = ParentNodes[0].get<clang::CaseStmt>();
+            if (CaseStmt) {
+                auto& SM = Context->getSourceManager();
+                auto CaseLineNo = SM.getExpansionLineNumber(CaseStmt->getBeginLoc());
+                auto StmtLineNo = SM.getExpansionLineNumber(Stmt->getBeginLoc());
+                if (CaseLineNo == StmtLineNo) {
+                    return;
+                }
+            }
+        }
         // If the statement is in a case statement, we automatically know that
         // we need to check for additional indentation.
         CheckStatementIndentation(Stmt->getBeginLoc(), Context,

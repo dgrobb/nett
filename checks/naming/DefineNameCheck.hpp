@@ -18,8 +18,8 @@ class DefineNameChecker : public clang::PPCallbacks {
     public:
     DefineNameChecker(clang::SourceManager& Mgr) : SM(Mgr){};
     virtual void MacroDefined(
-            const clang::Token& MacroNameTok, const clang::MacroDirective* MD);
-    virtual void EndOfMainFile();
+            const clang::Token& MacroNameTok, const clang::MacroDirective* MD) override;
+    virtual void EndOfMainFile() override;
 
     private:
     clang::SourceManager& SM;

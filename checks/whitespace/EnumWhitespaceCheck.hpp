@@ -16,7 +16,7 @@ class EnumWhitespaceChecker
     EnumWhitespaceChecker(clang::Preprocessor& PP) : PP(PP) {
     }
     virtual void run(
-            const clang::ast_matchers::MatchFinder::MatchResult& Result);
+            const clang::ast_matchers::MatchFinder::MatchResult& Result) override;
 
     private:
     clang::Preprocessor& PP;

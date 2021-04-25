@@ -62,80 +62,80 @@ class NamingViolation : public Violation {
     public:
     NamingViolation(
             std::string SourceFilePath, uint LineNo, std::string Message);
-    std::string ToTerminalString(void);
-    std::string ToFileString(void);
-    ViolationType Type(void);
+    std::string ToTerminalString(void) override;
+    std::string ToFileString(void) override;
+    ViolationType Type(void) override;
 };
 
 class CommentsViolation : public Violation {
     public:
     CommentsViolation(
             std::string SourceFilePath, uint LineNo, std::string Message);
-    std::string ToTerminalString(void);
-    std::string ToFileString(void);
-    ViolationType Type(void);
+    std::string ToTerminalString(void) override;
+    std::string ToFileString(void) override;
+    ViolationType Type(void) override;
 };
 
 class BracesViolation : public Violation {
     public:
     BracesViolation(
             std::string SourceFilePath, uint LineNo, std::string Message);
-    std::string ToTerminalString(void);
-    std::string ToFileString(void);
-    ViolationType Type(void);
+    std::string ToTerminalString(void) override;
+    std::string ToFileString(void) override;
+    ViolationType Type(void) override;
 };
 
 class WhitespaceViolation : public Violation {
     public:
     WhitespaceViolation(
             std::string SourceFilePath, uint LineNo, std::string Message);
-    std::string ToTerminalString(void);
-    std::string ToFileString(void);
-    ViolationType Type(void);
+    std::string ToTerminalString(void) override;
+    std::string ToFileString(void) override;
+    ViolationType Type(void) override;
 };
 
 class IndentationViolation : public Violation {
     public:
     IndentationViolation(
             std::string SourceFilePath, uint LineNo, std::string Message);
-    std::string ToTerminalString(void);
-    std::string ToFileString(void);
-    ViolationType Type(void);
+    std::string ToTerminalString(void) override;
+    std::string ToFileString(void) override;
+    ViolationType Type(void) override;
 };
 
 class LineLengthViolation : public Violation {
     public:
     LineLengthViolation(
             std::string SourceFilePath, uint LineNo, std::string Message);
-    std::string ToTerminalString(void);
-    std::string ToFileString(void);
-    ViolationType Type(void);
+    std::string ToTerminalString(void) override;
+    std::string ToFileString(void) override;
+    ViolationType Type(void) override;
 };
 
 class OverallViolation : public Violation {
     public:
     OverallViolation(
             std::string SourceFilePath, uint LineNo, std::string Message);
-    std::string ToTerminalString(void);
-    std::string ToFileString(void);
-    ViolationType Type(void);
+    std::string ToTerminalString(void) override;
+    std::string ToFileString(void) override;
+    ViolationType Type(void) override;
 };
 
 class WarningViolation : public Violation {
     public:
     WarningViolation(
             std::string SourceFilePath, uint LineNo, std::string Message);
-    std::string ToTerminalString(void);
-    std::string ToFileString(void);
-    ViolationType Type(void);
+    std::string ToTerminalString(void) override;
+    std::string ToFileString(void) override;
+    ViolationType Type(void) override;
 };
 
 class NoteViolation : public Violation {
     public:
     NoteViolation(std::string SourceFilePath, uint LineNo, std::string Message);
-    std::string ToTerminalString(void);
-    std::string ToFileString(void);
-    ViolationType Type(void);
+    std::string ToTerminalString(void) override;
+    std::string ToFileString(void) override;
+    ViolationType Type(void) override;
 };
 
 }  // namespace nett

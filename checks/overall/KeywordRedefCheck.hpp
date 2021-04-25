@@ -16,7 +16,7 @@ class KeywordRedefChecker : public clang::PPCallbacks {
     KeywordRedefChecker(clang::SourceManager& SM, clang::LangOptions& LangOpts)
         : SM(SM), LangOpts(LangOpts){};
     virtual void MacroDefined(
-            const clang::Token& MacroNameTok, const clang::MacroDirective* MD);
+            const clang::Token& MacroNameTok, const clang::MacroDirective* MD) override;
 
     private:
     clang::SourceManager& SM;

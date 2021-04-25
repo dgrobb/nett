@@ -13,7 +13,7 @@ namespace warning {
 class GoToChecker : public clang::ast_matchers::MatchFinder::MatchCallback {
     public:
     virtual void run(
-            const clang::ast_matchers::MatchFinder::MatchResult& Result);
+            const clang::ast_matchers::MatchFinder::MatchResult& Result) override;
 };
 
 }  // namespace warning

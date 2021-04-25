@@ -45,7 +45,7 @@ class CommentManager {
 
 class FunctionCommentManager : public CommentManager {
     public:
-    void GenerateCommentViolations(void);
+    void GenerateCommentViolations(void) override;
 };
 
 extern FunctionCommentManager GlobalFunctionCommentManager;

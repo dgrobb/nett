@@ -327,8 +327,12 @@ int main(int Argc, const char** Argv) {
 
     // Once we've modified the arguments, we can then parse them
     int NewArgc = NewArgv.size();
-    CommonOptionsParser OptionsParser(
-            NewArgc, NewArgv.data(), NettOptionCategory, cl::ZeroOrMore);
+    auto OptionsParser = CommonOptionsParser::create(NewArgc, NewArgv.data(), NettOptionCategory, cl::ZeroOrMore);
+    
+    if (auto err = OptionsParser.takeError()) {
+        llvm::errs() << std::move(err);
+        return EXIT_FAILURE;
+    }
 
     // If they want the license, show it and exit
     if (ShowLicense) {
@@ -338,7 +342,7 @@ int main(int Argc, const char** Argv) {
 
     // Check if we received some input files.
     // Also check if files are accessible
-    auto FileList = OptionsParser.getSourcePathList();
+    auto FileList = OptionsParser->getSourcePathList();
 
     if (FileList.empty()) {
         llvm::errs() << "Error: No input files specified\n";
@@ -355,7 +359,7 @@ int main(int Argc, const char** Argv) {
     }
 
     // We have some files, so we can set up a new clang tool to do the checks.
-    ClangTool Tool(OptionsParser.getCompilations(), FileList);
+    ClangTool Tool(OptionsParser->getCompilations(), FileList);
     Tool.setDiagnosticConsumer(new WarningDiagConsumer);
     if (GenerateFiles) {
         GlobalViolationManager.SetOutputToFile();
@@ -371,7 +375,7 @@ int main(int Argc, const char** Argv) {
     std::vector<std::string> FileContentHolder;
     int FileIndex = 0;
 
-    for (const auto& FilePath : OptionsParser.getSourcePathList()) {
+    for (const auto& FilePath : OptionsParser->getSourcePathList()) {
         llvm::SmallString<128> AbsPath(FilePath);
         Tool.getFiles().makeAbsolutePath(AbsPath);
         std::string Content = input::GetSanitizedFileContent(AbsPath.c_str());

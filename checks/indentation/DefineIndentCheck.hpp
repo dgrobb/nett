@@ -17,7 +17,7 @@ class DefineIndentChecker : public clang::PPCallbacks {
     DefineIndentChecker(clang::SourceManager& Mgr, clang::Preprocessor& PP)
         : SM(Mgr), PP(PP){};
     virtual void MacroDefined(
-            const clang::Token& MacroNameTok, const clang::MacroDirective* MD);
+            const clang::Token& MacroNameTok, const clang::MacroDirective* MD) override;
 
     private:
     clang::SourceManager& SM;

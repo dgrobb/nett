@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 import unittest
 import os 
 
@@ -14,6 +14,7 @@ import testIndentationCheck
 import testLineLengthCheck
 import testOverallCheck
 import testWarningCheck
+import testPatchesCheck
 
 # Initialize the test suite
 loader = unittest.TestLoader()
@@ -28,6 +29,7 @@ suite.addTests(loader.loadTestsFromModule(testIndentationCheck))
 suite.addTests(loader.loadTestsFromModule(testLineLengthCheck))
 suite.addTests(loader.loadTestsFromModule(testOverallCheck))
 suite.addTests(loader.loadTestsFromModule(testWarningCheck))
+suite.addTests(loader.loadTestsFromModule(testPatchesCheck))
 
 # Initialize a runner, pass it the test suite and run it
 runner = unittest.TextTestRunner(verbosity=3)

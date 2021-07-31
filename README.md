@@ -1,18 +1,19 @@
 # nett
-Nett is command-line utility used to perform style
-checking on C source files in order to check for
-compliance with the CSSE2310 style guide.
+`nett` is command-line utility used to perform style
+checking on C source files. It checks for
+compliance with the style guide used by the 
+CSSE2310 programming course at the University of Queensland.
 
 ## Usage
 
-The utility has the following modes of operation:
+The program has the following modes of operation:
 
 1. Perform style checking on a set of source files
     and output all found violations to the terminal
     (default)
 
     ```
-    $ ./nett source1 [source2, ..., sourceN]
+    nett file1 [file2 ...]
     ```
 
 2. Perform style checking on a set of source files
@@ -20,93 +21,50 @@ The utility has the following modes of operation:
     capped number of violations found.
 
     ```
-    $ ./nett --generate-files source1 [source2, ..., sourceN]
+    nett --generate-files file1 [file2 ...]
     ```
-
-## Style Violations
-
-Nett generates style violations under the following
-categories:
-
-* NAMING
-    * Relates to incorrect naming of types,
-        variables, functions, constants and file names.
-* COMMENTS
-    * Relates to functions and variables
-        not having any associated comments.
-* BRACES
-    * Relates to incorrect brace positioning.
-* WHITESPACE
-    * Relates to spacing issues between 
-        variables and operators, and pointer spacing
-        consistency and style.
-* INDENTATION
-    * Relates to incorrect indentation of
-        statements in relation to their parents.
-* LINE_LENGTH
-    * Relates to the lengths of lines within a
-        source file.
-* OVERALL
-    * A generic category of style violation which
-        relates to things which are bad practice
-        or which make code unclear/unreadable.
-* WARNING
-    * Relates to the use of banned language features.
+    The generated `.styled` files will be created in the same
+    directory as the original source files provided.
 
 ## Installation
-Nett is written using the Clang Libtooling framework.
+`nett` is written using the Clang Libtooling framework.
 In order to build the program, its source code is
 required to be stored within a checked-out LLVM git
 repository under `llvm-project/clang-tools-extra`.
 
-The repository can be cloned using
+To do this, run the following:
 
 ```
-$ git clone --branch llvmorg-10.0.0 https://github.com/llvm/llvm-project.git
+git clone https://github.com/llvm/llvm-project.git && \
+  cd llvm-project && \
+  git checkout 82fbc5d45b0c2fc9050d1d5e335e35afb4ab2611 && \
+  cd clang-tools-extra && \
+  git submodule add https://github.com/dgrobb/nett.git && \
+  cd nett
 ```
 
-and the Nett source files can be added via a git 
-submodule using
-```
-$ cd llvm-project/clang-tools-extra
-$ git submodule add https://github.com/dgrobb/nett.git
-```
-Once the Nett source files are in place (under
+Once the `nett` source files are in place (under
 `llvm-project/clang-tools-extra`), it can be built
-as follows:
+using the provided build script
 
 ```
-$ cd llvm-project
-$ echo 'add_subdirectory(nett)' >> clang-tools-extra/CMakeLists.txt
-$ mkdir build
-$ cd build
-$ cmake -G Ninja ../llvm -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra" -DCMAKE_BUILD_TYPE:STRING=Release
-$ ninja nett
-
-``` 
-
-Note that the build process requires the `ninja` build
-tool. This can be found at <https://ninja-build.org/>.
-
-Once built, the `nett` executable is available under
-`llvm-project/build/bin`. If Nett needs to be rebuilt,
-the following can be run:
-
+./build.sh
 ```
-$ cd llvm-project/build
-$ ninja nett
-```
+
+> Note that the build process requires 
+> [`cmake`](https://cmake.org/install/) and 
+> [`ninja`](https://ninja-build.org) 
+> to be installed beforehand. 
 
 ## Tests
 
-To check that the program runs correctly, you can run the 
-test suite as follows:
+To check that the program works correctly, you can run the 
+test suite using the provided test script
 
 ```
-$ python3 nett/test/runner.py
+./runtests.sh
 ```
 
 ## License
 
-Nett is licensed under the GNU General Public
-License v3.0. 
+Nett is licensed under the GNU General Public License v3.0. 

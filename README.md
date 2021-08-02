@@ -65,6 +65,24 @@ test suite using the provided test script
 ./runtests.sh
 ```
 
+## Docker Compatibility
+`nett` is also available via Docker Hub. To build the docker image
+from scratch, run
+
+```
+docker build -t nett .
+```
+
+To run the program via the publicly available docker image
+(`dgrobb/nett`), you can use the provided wrapper script:
+
+```
+./nettrun.py [--generate-files] file [file ...]
+```
+
+This script wraps the `docker run` command and takes care of 
+mounting the necessary directories for the program to work correctly.
+
 ## License
 
-Nett is licensed under the GNU General Public License v3.0. 
+`nett` is licensed under the GNU General Public License v3.0. 

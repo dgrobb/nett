@@ -34,3 +34,18 @@ class TestWhitespaceChecks(unittest.TestCase):
         ])
 
         self.assertEqual(expected_output, extracted_output)
+    
+    def test_tab_expansion(self):
+        stdout = subprocess.check_output([NETT_PATH, TEST_PATH + "/test_files/patches/tabExpansionTest.c"])
+        extracted_output = "\n".join(stdout.decode("utf-8").split('\n')[1:])
+
+        expected_output = "\n".join([
+            "Line 3: [LINE-LENGTH] Line length of 80 is over the maximum of 79.",
+            "Line 4: [INDENTATION] 'int' Expected indent of 4 spaces, found 8.",
+            "Line 7: [INDENTATION] 'i' Expected indent of 12 spaces, found 16.",
+            "Line 8: [INDENTATION] 'i' Expected indent of 12 spaces, found 16.",
+            "Line 10: [INDENTATION] 'x' Expected indent of 8 spaces, found 9.",
+            ""
+        ])
+
+        self.assertEqual(expected_output, extracted_output)

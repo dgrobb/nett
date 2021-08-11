@@ -13,17 +13,45 @@
 namespace nett {
 namespace input {
 
-static const char TAB_REPLACEMENT[] = "        ";
+static const uint TABSTOP_SIZE = 8;
 static const uint MAX_LINE_LENGTH = 79;
 static const char* C_DIGRAPHS[] = {"<:", ":>", "<%", "%>", "%:", "%:%:"};
 static const char* C_TRIGRAPHS[] = {"\?\?=", "\?\?/", "\?\?'", "\?\?(", "\?\?)",
         "\?\?!", "\?\?<", "\?\?>", "\?\?-"};
 
-// Sanitizes the given content of a file, replacing
-// tabs with spaces and removing non-unix line endings.
-static void SanitizeFileContent(std::string& Content) {
+// Expands all tab characters in the given file content with
+// appropriate number of spaces to space to the next tab stop.
+// Creates and stores the expanded content in a new buffer.
+static std::string ExpandTabs(std::string& Content, int TabSize) {
 
-    ReplaceAll(Content, "\t", TAB_REPLACEMENT);
+    std::stringstream result;
+    int CurrentColumn = 0;
+
+    for (auto c : Content) {
+        if (c == '\n') {
+            result << c;
+            CurrentColumn = 0;
+            continue;
+        }
+        if (c == '\t') {
+            // Calculate the number of spaces we need to fill in
+            // to get to the next tab stop
+            int SpacesRequired = TabSize - (CurrentColumn % TabSize);
+            for (int i = 0; i < SpacesRequired; i++) {
+                result << ' ';
+                CurrentColumn++;
+            }
+            continue;
+        }
+        result << c;
+        CurrentColumn++;
+    }
+    return result.str();
+}
+
+// Sanitizes the given content of a file, namely
+// removing non-unix line endings.
+static void SanitizeFileContent(std::string& Content) {
     ReplaceAll(Content, "\r", "");
 }
 
@@ -210,6 +238,7 @@ std::string GetSanitizedFileContent(const std::string FilePath) {
     std::string Content = Buffer.rdbuf()->str();
 
     // Perform any required replacements
+    Content = ExpandTabs(Content, TABSTOP_SIZE);
     SanitizeFileContent(Content);
 
     // Check for filename violations

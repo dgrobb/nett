@@ -55,6 +55,9 @@ add_clang_executable(nett
     checks/warning/GoToCheck.cpp
     )
 
+# Uncomment the following line to disable Hungarian notation checks
+# add_definitions( -DIGNORE_HUNGARIAN_NOTATION )
+
 set(GCC_COMPILE_FLAGS "-O3")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COMPILE_FLAGS}")
 

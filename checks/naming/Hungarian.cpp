@@ -15,6 +15,11 @@ static bool IsHungarianNameEnum(llvm::StringRef VarName);
 
 bool IsHungarianVarName(llvm::StringRef VarName, clang::QualType VarType) {
 
+    // Conditionally disable hungarian notation checking 
+    #ifdef IGNORE_HUNGARIAN_NOTATION
+    return false;
+    #endif /* IGNORE_HUNGARIAN_NOTATION */
+
     llvm::StringRef VarTypeString = VarType.getAsString();
     auto NotFound = llvm::StringRef::npos;
 
